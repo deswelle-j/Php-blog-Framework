@@ -1,6 +1,6 @@
 <?php
 
-namespace PhpBlogFramework\Blog\Model;
+namespace Framework\Blog\Model;
 
 use \PDO;
 

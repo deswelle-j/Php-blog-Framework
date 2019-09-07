@@ -1,8 +1,8 @@
 <?php
 
-namespace PhpBlogFramework\Blog\Model;
+namespace Framework\Blog\Model;
 
-require_once("model/Manager.php");
+// require_once("model/Manager.php");
 
 class CommentManager extends Manager
 

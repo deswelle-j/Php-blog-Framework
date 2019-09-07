@@ -1,14 +1,11 @@
-
 <?php
+// require_once('model/PostManager.php');
 
-require_once('model/PostManager.php');
+// require_once('model/CommentManager.php');
 
-require_once('model/CommentManager.php');
+use Framework\Blog\Model\PostManager;
 
-use \PhpBlogFramework\Blog\Model\PostManager;
-
-use \PhpBlogFramework\Blog\Model\CommentManager;
-
+use Framework\Blog\Model\CommentManager;
 
 
 function listPosts()
@@ -17,7 +14,7 @@ function listPosts()
 
     $posts = $postManager->getPosts();
 
-    require('view/frontend/listPostsView.php');
+    require('../src/blog/view/frontend/listPostsView.php');
 }
 
 function post()
@@ -30,7 +27,7 @@ function post()
 
     $comments = $commentManager->getComments($_GET['id']);
 
-    require('view/frontend/postView.php');
+    require('../src/blog/view/frontend/postView.php');
 }
 
 function addComment($postId, $author, $comment)
@@ -63,6 +60,6 @@ function edit()
 
     else
     {
-        require('view/frontend/editView.php');
+        require('../src/blog/view/frontend/editView.php');
     }
 }

@@ -1,6 +1,8 @@
 <?php
 
-require('controller/frontend.php');
+require ('../vendor/autoload.php');
+
+require('../src/blog/controller/frontend.php');
 
 try
 {

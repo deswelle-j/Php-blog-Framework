@@ -1,0 +1,15 @@
+{
+    "name": "dew/php-blog-framework",
+    "authors": [
+        {
+            "name": "deswelle-j",
+            "email": "deswelle.johan@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Framework\\": "src/"
+        }
+    },
+    "require": {}
+}
