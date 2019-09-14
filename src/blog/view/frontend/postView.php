@@ -30,14 +30,13 @@
 
 	<?php
 
-		while($comment = $comments->fetch())
+		foreach( $comments as $comment)
 		{
-
 	?>
 
-			<p><strong><?= htmlspecialchars($comment['author']) ?></strong> le <?= $comment['comment_date_fr'] ?> (<a href="index.php?action=edit&amp;id=<?=$comment['id'] ?>&amp;post_id=<?= $comment['post_id'] ?>">modifier</a>)</p>
+			<p><strong><?= htmlspecialchars($comment->author()) ?></strong> le <?= $comment->commentDate() ?> (<a href="index.php?action=edit&amp;id=<?= $comment->id() ?>&amp;post_id=<?= $comment->postId() ?>">modifier</a>)</p>
 
-			<p><?= nl2br(htmlspecialchars($comment['comment'])) ?></p>
+			<p><?= $comment->comment() ?></p>
 
 	<?php
 		}

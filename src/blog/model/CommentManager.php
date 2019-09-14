@@ -2,8 +2,6 @@
 
 namespace Framework\Blog\Model;
 
-// require_once("model/Manager.php");
-
 class CommentManager extends Manager
 
 {
@@ -13,11 +11,18 @@ class CommentManager extends Manager
 	{
 		$db = $this->dbConnect();
 
-		$comments = $db->prepare('SELECT id,post_id,author,comment,DATE_FORMAT(comment_date, \'%d/%m/%Y à %Hh%imin%ss\') AS comment_date_fr FROM comments WHERE post_id = ? ORDER BY comment_date DESC');
+		$comments = $db->prepare('SELECT id,post_id,author,comment,publish,DATE_FORMAT(comment_date, \'%d/%m/%Y à %Hh%imin%ss\') AS comment_date_fr FROM comments WHERE post_id = ? ORDER BY comment_date DESC');
 
 		$comments->execute(array($postId));
 
-		return $comments;
+		$commentsReq = $comments->fetchAll();
+		$commentAll = [];
+		foreach($commentsReq as $comment){
+			$comment  = new Comment($comment['id'], $comment['post_id'], $comment['author'], $comment['comment'], $comment['publish'] , $comment['comment_date_fr']);
+			array_push($commentAll, $comment);
+		}
+		$comments->closeCursor();
+		return $commentAll;
 
 
 	}
@@ -36,7 +41,7 @@ class CommentManager extends Manager
 
 	}
 
-	public function editComment($commentId,$newComment)
+	public function editComment($commentId, $newComment)
 	{
 		$db = $this->dbConnect();
 
@@ -44,6 +49,4 @@ class CommentManager extends Manager
 
 		$req -> execute(array('id' => $commentId , 'newComment' => $newComment ));
 	}
-
-	
 }
