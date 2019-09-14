@@ -2,7 +2,7 @@
 
 namespace Framework\Blog\Model;
 
-// require_once("model/Manager.php");
+use Framework\Blog\Model\Post;
 
 class PostManager extends Manager
 {
@@ -15,7 +15,15 @@ class PostManager extends Manager
 		$req = $db->query('SELECT id, title, content, DATE_FORMAT(creation_date, \'%d/%m/%Y à %Hh%imin%ss\') 
 			AS creation_date_fr FROM posts ORDER BY creation_date DESC LIMIT 0, 5');
 
-		return $req;
+		$req->execute();
+		$postsReq = $req->fetchAll();
+		$postAll = [];
+		foreach($postsReq as $reqPost){
+			$post  = new Post($reqPost['id'], $reqPost['title'], $reqPost['content'], $reqPost['creation_date_fr']);
+			array_push($postAll, $post);
+		}
+		$req->closeCursor();
+		return $postAll;
 	}
 
 	public function getPost($postId)
@@ -27,11 +35,7 @@ class PostManager extends Manager
 			AS creation_date_fr FROM posts WHERE id = ?');
 
 		$req->execute(array($postId));
-
 		$post = $req->fetch();
-
-		return $post;
+		return new Post($post['id'], $post['title'],$post['content'], $post['creation_date_fr']);
 	}
-
-
 }

@@ -11,15 +11,15 @@
 
 		<h3>
 			
-			<?= htmlspecialchars($post['title']) ?>
+			<?= htmlspecialchars($post->title()) ?>
 
-			<em>le <?= $post['creation_date_fr'] ?></em>
+			<em>le <?= $post->dateCreation() ?></em>
 
 		</h3>
 
 		<p>
 			
-			<?= nl2br(htmlspecialchars($post['content'])) ?>
+			<?= nl2br(htmlspecialchars($post->content() )) ?>
 
 		</p>
 		
@@ -45,7 +45,7 @@
 	?>
 
 
-	<form action="index.php?action=addComment&amp;id=<?= $post['id'] ?>" method="post">
+	<form action="index.php?action=addComment&amp;id=<?= $post->id() ?>" method="post">
 
     <div>
 
@@ -78,7 +78,7 @@
 
 
 
-	
+
 
 
 
