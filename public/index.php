@@ -1,6 +1,11 @@
 <?php
 
 require ('../vendor/autoload.php');
+$loader = new \Twig\Loader\FilesystemLoader('../src/blog/view/frontend');
+$twig = new \Twig\Environment($loader, [
+    'debug' => true
+]);
+$twig->addExtension(new \Twig\Extension\DebugExtension());
 
 require('../src/blog/controller/frontend.php');
 
@@ -12,27 +17,24 @@ try
 
         if($_GET['action'] == 'listPosts')
         {
-            listPosts();
+            listPosts($twig);
         }
 
         if($_GET['action'] == 'post')
         {
             if(isset($_GET['id']) && $_GET['id'] >= 0)
             {
-                post();
+                post($twig);
             }
             else
             {
                 throw new Exception('Aucun identifiant de billet envoyé');
             }
         }
-
         if($_GET['action'] == 'addComment')
         {
-
             if(isset($_GET['id']) && $_GET['id'] >= 0)
             {
-
                 if (!empty($_POST['author']) && !empty($_POST['comment']))
                 {
                     addComment($_GET['id'], $_POST['author'], $_POST['comment']);
@@ -41,14 +43,12 @@ try
                 {
                     throw new Exception('Tous les champs ne sont pas remplis !');
                 }
-
             }
             else
             {
                 throw new Exception('Aucun identifiant de billet envoyé');
             }
         }
-
         if($_GET['action'] == 'edit')
         {
             if(isset($_GET['id']) && $_GET['id'] >=0 && isset($_GET['post_id']) && $_GET['post_id'] >=0 )
@@ -57,23 +57,19 @@ try
             }
             else
             {
-
                 throw new Exception('Erreur : identifiant de commentaire ou identifiant de billet non envoyé');
             }
         }
     }
-
     else
     {
-        listPosts();
+        listPosts($twig);
     }
-
 }
 catch(Exception $e)
 {
     $errorMessage = $e->getMessage();
-    
-    require('view/errorView.php');
+    require('../src/blog/view/frontend/errorView.php');
 }
 
 
