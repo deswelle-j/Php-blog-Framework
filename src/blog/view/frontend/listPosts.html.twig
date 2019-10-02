@@ -1,0 +1,24 @@
+{% extends "template.html.twig" %}
+
+{% block title %}Blog{% endblock %}
+{% block content %}
+
+<h1>Liste des billets du blog</h1>
+	
+{% for post in posts %}
+
+    <div class="news">
+        <h3>
+            {{post.title }}
+            <em>le {{post.dateCreation}}</em>
+        </h3>
+        <p>
+            {{post.content}}
+            <br />
+            <em><a href="index.php?action=post&amp;id={{post.id}}">Commentaires</a></em>
+        </p>
+    </div> 
+{% endfor %}
+
+
+{% endblock %}
