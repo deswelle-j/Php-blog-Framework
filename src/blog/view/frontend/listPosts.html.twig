@@ -1,24 +1,32 @@
-{% extends "template.html.twig" %}
+{# {% extends "template.html.twig" %} #}
+{% extends "base.html.twig" %}
 
 {% block title %}Blog{% endblock %}
 {% block content %}
-
+<section id="next-section" class="probootstrap-section">
 <h1>Liste des billets du blog</h1>
-	
-{% for post in posts %}
 
-    <div class="news">
-        <h3>
-            {{post.title }}
-            <em>le {{post.dateCreation}}</em>
-        </h3>
-        <p>
-            {{post.content}}
-            <br />
-            <em><a href="index.php?action=post&amp;id={{post.id}}">Commentaires</a></em>
-        </p>
-    </div> 
-{% endfor %}
 
+<div class="container">
+    <div class="row mb40">
+        {% for post in posts %}
+                <div class="probootstrap-hentry mb30">
+                    <p>
+                        <a href="#">
+                            <img src="img/work_1.jpg" 
+                            alt="Free Bootstrap Template by uicookies.com" class="img-responsive">
+                        </a>
+                    </p>
+                    <h3 class="mt0">
+                        <a href="index.php?action=post&amp;id={{post.id}}" class="hover-reverse">
+                            {{post.title }}
+                        </a>
+                    </h3>
+                    <p class="text-mute">{{post.dateCreation}} &bull; <i class="icon-bubble"></i> 3 Comments</p>
+                </div>
+        {% endfor %}
+    </div>
+</div>
+</section>
 
 {% endblock %}
