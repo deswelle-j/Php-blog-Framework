@@ -2,6 +2,12 @@
 use Framework\Blog\Model\PostManager;
 use Framework\Blog\Model\CommentManager;
 
+function home($twig)
+{
+
+    echo $twig->render('home.html.twig');
+}
+
 function listPosts($twig)
 {
     $postManager = new PostManager();

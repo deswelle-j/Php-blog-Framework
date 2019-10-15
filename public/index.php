@@ -63,7 +63,7 @@ try
     }
     else
     {
-        listPosts($twig);
+        home($twig);
     }
 }
 catch(Exception $e)
