@@ -60,7 +60,18 @@ try
                 throw new Exception('Erreur : identifiant de commentaire ou identifiant de billet non envoyé');
             }
         }
-    }
+        if ($_GET['action'] == 'authentification'){
+            if (isset($_SESSION['user']) && $_SESSION['user_role']){
+                    authentification($twig, $_SESSION['user_role']);
+            }elseif (isset($_POST['inputEmail'], $_POST['inputPassword'])){
+                userConnection($twig, $_POST['inputEmail'], $_POST['inputPassword'] );
+            }else{
+                userConnection($twig);
+            }
+        }if ($_GET['action'] == 'logOut'){
+            userLogOut();
+        }
+    }   
     else
     {
         home($twig);
