@@ -23,8 +23,21 @@ class CommentManager extends Manager
 		}
 		$comments->closeCursor();
 		return $commentAll;
+	}
 
+	public function getCommentsList(){
+		$db = $this->dbConnect();
+		$req = $db->query('SELECT id,post_id,author,comment,publish,DATE_FORMAT(comment_date, \'%d/%m/%Y à %Hh%imin%ss\') AS comment_date_fr FROM comments ORDER BY comment_date DESC');
 
+		$req->execute();
+		$commentsReq = $req->fetchAll();
+		$commentAll = [];
+		foreach($commentsReq as $comment){
+			$comment  = new Comment($comment['id'], $comment['post_id'], $comment['author'], $comment['comment'], $comment['publish'] , $comment['comment_date_fr']);
+			array_push($commentAll, $comment);
+		}
+		$req->closeCursor();
+		return $commentAll;	
 	}
 
 	public function postComment($postId, $author, $comment)
