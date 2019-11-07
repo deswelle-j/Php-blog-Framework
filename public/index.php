@@ -11,15 +11,12 @@ require('../src/blog/controller/frontend.php');
 
 try
 {
-
     if(isset($_GET['action']))
     {
-
         if($_GET['action'] == 'listPosts')
         {
             listPosts($twig);
         }
-
         if($_GET['action'] == 'post')
         {
             if(isset($_GET['id']) && $_GET['id'] >= 0)
@@ -70,6 +67,14 @@ try
             }
         }if ($_GET['action'] == 'logOut'){
             userLogOut();
+        }if ($_GET['action'] == 'signup'){
+            if (isset($_POST['inputEmail'], $_POST['inputPassword'], $_POST['inputFirstname'],
+            $_POST['inputLastname'])){
+                userCreation($twig, $_POST['inputEmail'], $_POST['inputPassword'],
+                    $_POST['inputFirstname'],$_POST['inputLastname'] );
+            }else{
+                userCreation($twig);
+            }
         }
     }   
     else
