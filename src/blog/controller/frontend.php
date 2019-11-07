@@ -114,3 +114,24 @@ function userLogOut(){
     session_destroy();
     header('Location: index.php');
 }
+
+function userCreation($twig, $email = false, $password = false, $firstname = false, $lastname = false){
+    
+    if ($email != false && $password != false && $firstname != false && $lastname != false){
+        $login = trim($email);
+        $password =trim($password);
+        $firstname = trim($firstname);
+        $lastname = trim($lastname);
+        if (filter_var($login, FILTER_VALIDATE_EMAIL) && !empty($password) && !empty($firstname) && 
+            !empty($lastname)) {
+            $userManager = new UsersManager();
+            $password = password_hash($password, PASSWORD_DEFAULT);
+            $user = $userManager->userCreation($login, $password, $firstname, $lastname);
+            header('Location: index.php');
+        }else {
+            throw new Exception('Information de connexion incorrectes');
+        }
+    }else{
+        echo $twig->render('signUpView.html.twig');
+    }
+}
