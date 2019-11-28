@@ -11,15 +11,12 @@ require('../src/blog/controller/frontend.php');
 
 try
 {
-
     if(isset($_GET['action']))
     {
-
         if($_GET['action'] == 'listPosts')
         {
             listPosts($twig);
         }
-
         if($_GET['action'] == 'post')
         {
             if(isset($_GET['id']) && $_GET['id'] >= 0)
@@ -60,7 +57,26 @@ try
                 throw new Exception('Erreur : identifiant de commentaire ou identifiant de billet non envoyé');
             }
         }
-    }
+        if ($_GET['action'] == 'authentification'){
+            if (isset($_SESSION['user']) && $_SESSION['user_role']){
+                    authentification($twig, $_SESSION['user_role']);
+            }elseif (isset($_POST['inputEmail'], $_POST['inputPassword'])){
+                userConnection($twig, $_POST['inputEmail'], $_POST['inputPassword'] );
+            }else{
+                userConnection($twig);
+            }
+        }if ($_GET['action'] == 'logOut'){
+            userLogOut();
+        }if ($_GET['action'] == 'signup'){
+            if (isset($_POST['inputEmail'], $_POST['inputPassword'], $_POST['inputFirstname'],
+            $_POST['inputLastname'])){
+                userCreation($twig, $_POST['inputEmail'], $_POST['inputPassword'],
+                    $_POST['inputFirstname'],$_POST['inputLastname'] );
+            }else{
+                userCreation($twig);
+            }
+        }
+    }   
     else
     {
         home($twig);

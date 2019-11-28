@@ -1,6 +1,9 @@
 <?php
 use Framework\Blog\Model\PostManager;
 use Framework\Blog\Model\CommentManager;
+use Framework\Blog\Model\UsersManager;
+use Framework\Blog\Utils\Session;
+
 
 function home($twig)
 {
@@ -11,7 +14,7 @@ function home($twig)
 function listPosts($twig)
 {
     $postManager = new PostManager();
-    $posts = $postManager->getPosts($twig);
+    $posts = $postManager->getPosts();
     echo $twig->render('listPosts.html.twig', ['posts' => $posts ]);
 }
 function post($twig)
@@ -49,5 +52,78 @@ function edit($twig)
     else
     {
         require('../src/blog/view/frontend/editView.php');
+    }
+}
+
+
+
+function authentification($twig, $role ){
+
+    if ($role && $role == 'admin'){
+        $postManager = new PostManager();
+        $posts = $postManager->getPosts();
+        $commentManager = new CommentManager();
+        $comments = $commentManager->getCommentsList();
+        echo $twig->render('administrationView.html.twig', 
+        [
+            'posts' => $posts,
+            'comments' => $comments 
+        ]);
+    }else {
+        header('Location: index.php');
+    }
+}
+
+function userConnection($twig, $email = false, $password = false){
+    
+    if ($email != false && $password != false){
+        $login = trim($email);
+        $password =trim($password);
+        var_dump($login);
+        var_dump($password);
+        if (filter_var($login, FILTER_VALIDATE_EMAIL) && !empty($password)) {
+            $userManager = new UsersManager();
+            $user = $userManager->userAuthentification($login);
+            $count = count($user);
+            if (count($user) > 0 && password_verify($password, $user[0]['password'])) {
+                
+                $_SESSION['user'] = $user[0]['id'];
+                $_SESSION['user_fullname'] = $user[0]['firstname'] . ' ' . $user[0]['lastname'];
+                $_SESSION['user_role'] = $user[0]['role'];
+                authentification($twig, $_SESSION['user_role']);
+            }else{
+                throw new Exception('Utilisateur non trouvé ou mot de passe incorrect');
+            }
+        }else {
+            throw new Exception('Information de connexion incorrectes');
+        }
+    }else{
+        echo $twig->render('connectionView.html.twig');
+    }
+}
+
+function userLogOut(){
+    Session::supprimeSession();
+    header('Location: index.php');
+}
+
+function userCreation($twig, $email = false, $password = false, $firstname = false, $lastname = false){
+    
+    if ($email != false && $password != false && $firstname != false && $lastname != false){
+        $login = trim($email);
+        $password =trim($password);
+        $firstname = trim($firstname);
+        $lastname = trim($lastname);
+        if (filter_var($login, FILTER_VALIDATE_EMAIL) && !empty($password) && !empty($firstname) && 
+            !empty($lastname)) {
+            $userManager = new UsersManager();
+            $password = password_hash($password, PASSWORD_DEFAULT);
+            $user = $userManager->userCreation($login, $password, $firstname, $lastname);
+            header('Location: index.php');
+        }else {
+            throw new Exception('Information de connexion incorrectes');
+        }
+    }else{
+        echo $twig->render('signUpView.html.twig');
     }
 }
