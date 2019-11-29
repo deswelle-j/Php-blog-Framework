@@ -1,13 +1,16 @@
 <?php
-
 require ('../vendor/autoload.php');
+
+use Framework\Blog\Controller\Frontend;
+
+session_start();
 $loader = new \Twig\Loader\FilesystemLoader('../src/blog/view/frontend');
 $twig = new \Twig\Environment($loader, [
     'debug' => true
 ]);
 $twig->addExtension(new \Twig\Extension\DebugExtension());
 
-require('../src/blog/controller/frontend.php');
+$frontend =  new Frontend(); 
 
 try
 {
@@ -15,13 +18,13 @@ try
     {
         if($_GET['action'] == 'listPosts')
         {
-            listPosts($twig);
+            $frontend->listPosts($twig);
         }
         if($_GET['action'] == 'post')
         {
             if(isset($_GET['id']) && $_GET['id'] >= 0)
             {
-                post($twig);
+                $frontend->post($twig);
             }
             else
             {
@@ -34,7 +37,7 @@ try
             {
                 if (!empty($_POST['author']) && !empty($_POST['comment']))
                 {
-                    addComment($_GET['id'], $_POST['author'], $_POST['comment']);
+                    $frontend->addComment($_GET['id'], $_POST['author'], $_POST['comment']);
                 }
                 else
                 {
@@ -50,7 +53,7 @@ try
         {
             if(isset($_GET['id']) && $_GET['id'] >=0 && isset($_GET['post_id']) && $_GET['post_id'] >=0 )
             {
-                edit();
+                $frontend->edit();
             }
             else
             {
@@ -59,27 +62,36 @@ try
         }
         if ($_GET['action'] == 'authentification'){
             if (isset($_SESSION['user']) && $_SESSION['user_role']){
-                    authentification($twig, $_SESSION['user_role']);
+                $frontend->authentification($twig, $_SESSION['user_role']);
             }elseif (isset($_POST['inputEmail'], $_POST['inputPassword'])){
-                userConnection($twig, $_POST['inputEmail'], $_POST['inputPassword'] );
+                $frontend->userConnection($twig, $_POST['inputEmail'], $_POST['inputPassword'] );
             }else{
-                userConnection($twig);
+                $frontend->userConnection($twig);
             }
         }if ($_GET['action'] == 'logOut'){
-            userLogOut();
+            $frontend->userLogOut();
         }if ($_GET['action'] == 'signup'){
             if (isset($_POST['inputEmail'], $_POST['inputPassword'], $_POST['inputFirstname'],
             $_POST['inputLastname'])){
-                userCreation($twig, $_POST['inputEmail'], $_POST['inputPassword'],
+                $frontend->userCreation($twig, $_POST['inputEmail'], $_POST['inputPassword'],
                     $_POST['inputFirstname'],$_POST['inputLastname'] );
             }else{
-                userCreation($twig);
+                $frontend->userCreation($twig);
+            }
+        }if ($_GET['action'] == 'createsuperuser'){
+            var_dump($_POST);
+            if (isset($_POST['inputEmail'], $_POST['inputPassword'], $_POST['inputFirstname'],
+            $_POST['inputLastname'], $_POST['inputRole'])){
+                $frontend->superUserCreation($twig, $_POST['inputEmail'], $_POST['inputPassword'],
+                    $_POST['inputFirstname'],$_POST['inputLastname'], $_POST['inputRole']);
+            }else{
+                header('Location: index.php?action=authentification');
             }
         }
     }   
     else
     {
-        home($twig);
+        $frontend->home($twig);
     }
 }
 catch(Exception $e)
