@@ -8,12 +8,8 @@ class CommentManager extends Manager
     {
         $db = $this->dbConnect();
         $comments = $db->prepare(
-            'SELECT 
-                id,
-                post_id,author,
-                comment,
-                publish,
-                DATE_FORMAT(comment_date, \'%d/%m/%Y à %Hh%imin%ss\') AS comment_date_fr 
+            'SELECT id, post_id,author, comment, publish,
+            DATE_FORMAT(comment_date, \'%d/%m/%Y à %Hh%imin%ss\') AS comment_date_fr 
             FROM comments 
             WHERE post_id = ? 
             ORDER BY comment_date DESC'
@@ -36,16 +32,11 @@ class CommentManager extends Manager
         return $commentAll;
     }
 
-    public function getCommentsList() 
+    public function getCommentsList()
     {
         $db = $this->dbConnect();
         $req = $db->query(
-            'SELECT 
-            id,
-            post_id,
-            author,
-            comment,
-            publish,
+            'SELECT id, post_id, author, comment, publish,
             DATE_FORMAT(comment_date, \'%d/%m/%Y à %Hh%imin%ss\') AS comment_date_fr 
             FROM comments 
             ORDER BY comment_date DESC'

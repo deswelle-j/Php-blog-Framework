@@ -6,7 +6,7 @@ use Framework\Blog\Model\Post;
 
 class PostManager extends Manager
 {
-    public function getPosts() 
+    public function getPosts()
     {
         $db = $this->dbConnect();
         $req = $db->query(
@@ -33,7 +33,7 @@ class PostManager extends Manager
         return $postAll;
     }
 
-    public function getPost($postId) 
+    public function getPost($postId)
     {
         $db = $this->dbConnect();
         $req = $db->prepare(

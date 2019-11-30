@@ -21,7 +21,7 @@ class Frontend
         $posts = $postManager->getPosts();
         echo $twig->render('listPosts.html.twig', ['posts' => $posts ]);
     }
-    
+
     public function post($twig)
     {
         $postManager = new PostManager();
@@ -129,7 +129,7 @@ class Frontend
         }
     }
 
-    public function superUserCreation($twig, $email = false, $password = false, $firstname = false, $lastname = false, $role = false) 
+    public function superUserCreation($twig, $email = false, $password = false, $firstname = false, $lastname = false, $role = false)
     {
         if ($email != false && $password != false && $firstname != false && $lastname != false && $role != false) {
             $login = trim($email);
