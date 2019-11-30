@@ -21,6 +21,7 @@ class Frontend
         $posts = $postManager->getPosts();
         echo $twig->render('listPosts.html.twig', ['posts' => $posts ]);
     }
+    
     public function post($twig)
     {
         $postManager = new PostManager();
@@ -43,6 +44,7 @@ class Frontend
             header('Location: index.php?action=post&id=' . $postId);
         }
     }
+
     public function edit($twig)
     {
         // 2 options : no data from the form or the data is present
@@ -52,8 +54,8 @@ class Frontend
             header("Location:index.php?action=post&id=".$_GET['post_id']);
         } else {
             require('../src/blog/view/frontend/editView.php');
-        } 
-    } 
+        }
+    }
 
     public function authentification($twig, $role)
     {
@@ -71,16 +73,14 @@ class Frontend
             );
         } else {
             header('Location: index.php');
-        } 
-    } 
+        }
+    }
 
     public function userConnection($twig, $email = false, $password = false)
     {
         if ($email != false && $password != false) {
             $login = trim($email);
             $password =trim($password);
-            var_dump($login);
-            var_dump($password);
             if (filter_var($login, FILTER_VALIDATE_EMAIL) && !empty($password)) {
                 $userManager = new UsersManager();
                 $user = $userManager->userAuthentification($login);
@@ -92,14 +92,14 @@ class Frontend
                     $this->authentification($twig, $_SESSION['user_role']);
                 } else {
                     throw new Exception('Utilisateur non trouvé ou mot de passe incorrect');
-                } 
+                }
             } else {
                 throw new Exception('Information de connexion incorrectes');
-            } 
+            }
         } else {
             echo $twig->render('connectionView.html.twig');
-        } 
-    } 
+        }
+    }
 
     public function userLogOut()
     {
@@ -123,10 +123,10 @@ class Frontend
                 header('Location: index.php');
             } else {
                 throw new Exception('Information de connexion incorrectes');
-            } 
+            }
         } else {
             echo $twig->render('signUpView.html.twig');
-        } 
+        }
     }
 
     public function superUserCreation($twig, $email = false, $password = false, $firstname = false, $lastname = false, $role = false) 
@@ -144,9 +144,9 @@ class Frontend
                 header('Location: Location: index.php?action=authentification');
             } else {
                 throw new Exception('Information de connexion incorrectes');
-            } 
+            }
         } else {
             echo $twig->render('administrationView.html.twig');
-        } 
+        }
     }
-} 
+}

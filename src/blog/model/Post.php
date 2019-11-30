@@ -16,29 +16,29 @@ class Post
         $this->setTitle($title);
         $this->setContent($content);
         $this->setDateCreation($date_creation);
-    } 
+    }
 
     public function id() 
     {
         return $this->id;
-    } 
+    }
     public function title() 
     {
         return $this->title;
-    } 
+    }
     public function content() 
     {
         return $this->content;
-    } 
+    }
     public function dateCreation() 
     {
         return $this->date_creation;
-    } 
+    }
 
     public function setId($id) 
     {
         $this->id = (int) $id;
-    } 
+    }
 
     public function setTitle($title) 
     {
@@ -46,7 +46,7 @@ class Post
         {
             $this->title = $title;
         }
-    } 
+    }
 
     public function setContent($content) 
     {
@@ -54,10 +54,10 @@ class Post
         {
             $this->content = $content;
         }
-    } 
+    }
 
     public function setDateCreation($date_creation) 
     {
         $this->date_creation = $date_creation;
-    } 
-} 
+    }
+}
