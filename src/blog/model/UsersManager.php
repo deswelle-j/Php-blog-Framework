@@ -5,7 +5,7 @@ use PDO;
 
 class UsersManager extends Manager
 {
-    public function userAuthentification($login) 
+    public function userAuthentification($login)
     {
         $db = $this->dbConnect();
         $req= $db->prepare('SELECT id, email, password, role, firstname, lastname FROM users WHERE email = :login');
@@ -15,7 +15,7 @@ class UsersManager extends Manager
         return $user;
     }
 
-    public function userCreation($login, $password, $firstname, $lastname) 
+    public function userCreation($login, $password, $firstname, $lastname)
     {
         $db = $this->dbConnect();
         $req= $db->prepare('INSERT INTO users (email, password, role, firstname, lastname)
@@ -28,7 +28,7 @@ class UsersManager extends Manager
         $req->execute();  
     }
 
-    public function superUserCreation($login, $password, $firstname, $lastname , $role) 
+    public function superUserCreation($login, $password, $firstname, $lastname , $role)
     {
         $db = $this->dbConnect();
         $req= $db->prepare('INSERT INTO users (email, password, role, firstname, lastname)
