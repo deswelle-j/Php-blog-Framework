@@ -10,10 +10,7 @@ class PostManager extends Manager
     {
         $db = $this->dbConnect();
         $req = $db->query(
-            'SELECT 
-            id, 
-            title, 
-            content, 
+            'SELECT id, title, content, 
             DATE_FORMAT(creation_date, \'%d/%m/%Y à %Hh%imin%ss\') AS creation_date_fr 
             FROM posts 
             ORDER BY creation_date 
@@ -31,10 +28,10 @@ class PostManager extends Manager
                 $reqPost['creation_date_fr']
             );
             array_push($postAll, $post);
-        } 
+        }
         $req->closeCursor();
         return $postAll;
-    } 
+    }
 
     public function getPost($postId) 
     {
@@ -55,5 +52,5 @@ class PostManager extends Manager
             $post['content'], 
             $post['creation_date_fr']
         );
-    } 
-} 
+    }
+}

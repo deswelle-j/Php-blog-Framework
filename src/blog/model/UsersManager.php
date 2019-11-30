@@ -13,7 +13,7 @@ class UsersManager extends Manager
         $req->execute();
         $user = $req->fetchAll();
         return $user;
-    } 
+    }
 
     public function userCreation($login, $password, $firstname, $lastname) 
     {
@@ -26,7 +26,7 @@ class UsersManager extends Manager
         $req->bindValue(':firstname', $firstname, PDO::PARAM_STR);
         $req->bindValue(':lastname', $lastname, PDO::PARAM_STR);
         $req->execute();  
-    } 
+    }
 
     public function superUserCreation($login, $password, $firstname, $lastname , $role) 
     {
@@ -39,5 +39,5 @@ class UsersManager extends Manager
         $req->bindValue(':firstname', $firstname, PDO::PARAM_STR);
         $req->bindValue(':lastname', $lastname, PDO::PARAM_STR);
         $req->execute();
-    } 
-} 
+    }
+}

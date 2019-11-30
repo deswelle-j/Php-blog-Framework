@@ -4,7 +4,6 @@ namespace Framework\Blog\Model;
 
 class CommentManager extends Manager
 {
-
     public function getComments($postId)
     {
         $db = $this->dbConnect();
@@ -32,10 +31,10 @@ class CommentManager extends Manager
                 $comment['comment_date_fr']
             );
             array_push($commentAll, $comment);
-        } 
+        }
         $comments->closeCursor();
         return $commentAll;
-    } 
+    }
 
     public function getCommentsList() 
     {
@@ -67,7 +66,7 @@ class CommentManager extends Manager
         } 
         $req->closeCursor();
         return $commentAll;	
-    } 
+    }
 
     public function postComment($postId, $author, $comment)
     {
@@ -75,12 +74,12 @@ class CommentManager extends Manager
         $comments = $db->prepare('INSERT INTO comments(post_id, author, comment, comment_date) VALUES(?, ?, ?, NOW())');
         $affectedLines = $comments->execute(array($postId, $author, $comment));
         return $affectedLines;
-    } 
+    }
 
     public function editComment($commentId, $newComment)
     {
         $db = $this->dbConnect();
         $req = $db->prepare('UPDATE comments SET comment = :newComment , comment_date = NOW() WHERE id = :id ');
         $req -> execute(array('id' => $commentId , 'newComment' => $newComment ));
-    } 
+    }
 }

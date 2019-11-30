@@ -14,7 +14,6 @@ class Manager
             // On affiche des warnings pour les erreurs, à commenter en prod (valeur par défaut PDO::ERRMODE_SILENT)
             PDO::ATTR_ERRMODE => PDO::ERRMODE_WARNING
         );
-
         $db = new PDO(
             'mysql:host=' . HOST . ';
             dbname=' . DB, USER, PASS,
