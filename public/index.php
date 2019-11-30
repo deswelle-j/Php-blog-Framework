@@ -1,4 +1,5 @@
 <?php
+require_once('../conf/database.php');
 require ('../vendor/autoload.php');
 
 use Framework\Blog\Controller\Frontend;
