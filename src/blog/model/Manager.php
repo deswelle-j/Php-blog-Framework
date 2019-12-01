@@ -21,6 +21,6 @@ class Manager
             PASS,
             $db_options
         );
-        return $db;		
+        return $db;
     }
 }
