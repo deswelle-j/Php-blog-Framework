@@ -1,6 +1,6 @@
 <?php
 require_once('../conf/database.php');
-require ('../vendor/autoload.php');
+require('../vendor/autoload.php');
 
 use Framework\Blog\Controller\Frontend;
 
@@ -11,94 +11,84 @@ $twig = new \Twig\Environment($loader, [
 ]);
 $twig->addExtension(new \Twig\Extension\DebugExtension());
 
-$frontend =  new Frontend(); 
+$frontend =  new Frontend();
 
-try
-{
-    if(isset($_GET['action']))
-    {
-        if($_GET['action'] == 'listPosts')
-        {
+try {
+    if (isset($_GET['action'])) {
+        if ($_GET['action'] == 'listPosts') {
             $frontend->listPosts($twig);
         }
-        if($_GET['action'] == 'post')
-        {
-            if(isset($_GET['id']) && $_GET['id'] >= 0)
-            {
+        if ($_GET['action'] == 'post') {
+            if (isset($_GET['id']) && $_GET['id'] >= 0) {
                 $frontend->post($twig);
-            }
-            else
-            {
+            } else {
                 throw new Exception('Aucun identifiant de billet envoyé');
             }
         }
-        if($_GET['action'] == 'addComment')
-        {
-            if(isset($_GET['id']) && $_GET['id'] >= 0)
-            {
-                if (!empty($_POST['author']) && !empty($_POST['comment']))
-                {
+        if ($_GET['action'] == 'addComment') {
+            if (isset($_GET['id']) && $_GET['id'] >= 0) {
+                if (!empty($_POST['author']) && !empty($_POST['comment'])) {
                     $frontend->addComment($_GET['id'], $_POST['author'], $_POST['comment']);
-                }
-                else
-                {
+                } else {
                     throw new Exception('Tous les champs ne sont pas remplis !');
                 }
-            }
-            else
-            {
+            } else {
                 throw new Exception('Aucun identifiant de billet envoyé');
             }
         }
-        if($_GET['action'] == 'edit')
-        {
-            if(isset($_GET['id']) && $_GET['id'] >=0 && isset($_GET['post_id']) && $_GET['post_id'] >=0 )
-            {
+        if ($_GET['action'] == 'edit') {
+            if (isset($_GET['id']) && $_GET['id'] >=0 && isset($_GET['post_id']) && $_GET['post_id'] >=0 ) {
                 $frontend->edit();
-            }
-            else
-            {
+            } else {
                 throw new Exception('Erreur : identifiant de commentaire ou identifiant de billet non envoyé');
             }
         }
-        if ($_GET['action'] == 'authentification'){
-            if (isset($_SESSION['user']) && $_SESSION['user_role']){
+        if ($_GET['action'] == 'authentification') {
+            if (isset($_SESSION['user']) && $_SESSION['user_role']) {
                 $frontend->authentification($twig, $_SESSION['user_role']);
-            }elseif (isset($_POST['inputEmail'], $_POST['inputPassword'])){
+            } elseif (isset($_POST['inputEmail'], $_POST['inputPassword'])) {
                 $frontend->userConnection($twig, $_POST['inputEmail'], $_POST['inputPassword'] );
-            }else{
+            } else {
                 $frontend->userConnection($twig);
             }
-        }if ($_GET['action'] == 'logOut'){
+        }
+        if ($_GET['action'] == 'logOut') {
             $frontend->userLogOut();
-        }if ($_GET['action'] == 'signup'){
-            if (isset($_POST['inputEmail'], $_POST['inputPassword'], $_POST['inputFirstname'],
-            $_POST['inputLastname'])){
-                $frontend->userCreation($twig, $_POST['inputEmail'], $_POST['inputPassword'],
-                    $_POST['inputFirstname'],$_POST['inputLastname'] );
-            }else{
+        }
+        if ($_GET['action'] == 'signup') {
+            if (isset($_POST['inputEmail'],
+                $_POST['inputPassword'],
+                $_POST['inputFirstname'],
+                $_POST['inputLastname'])) {
+                    $frontend->userCreation($twig,
+                        $_POST['inputEmail'],
+                        $_POST['inputPassword'],
+                        $_POST['inputFirstname'],
+                        $_POST['inputLastname']);
+            } else {
                 $frontend->userCreation($twig);
             }
-        }if ($_GET['action'] == 'createsuperuser'){
-            var_dump($_POST);
-            if (isset($_POST['inputEmail'], $_POST['inputPassword'], $_POST['inputFirstname'],
-            $_POST['inputLastname'], $_POST['inputRole'])){
-                $frontend->superUserCreation($twig, $_POST['inputEmail'], $_POST['inputPassword'],
-                    $_POST['inputFirstname'],$_POST['inputLastname'], $_POST['inputRole']);
-            }else{
+        }
+        if ($_GET['action'] == 'createsuperuser') {
+            if (isset($_POST['inputEmail'],
+                $_POST['inputPassword'],
+                $_POST['inputFirstname'],
+                $_POST['inputLastname'],
+                $_POST['inputRole'])) {
+                    $frontend->superUserCreation($twig, $_POST['inputEmail'],
+                        $_POST['inputPassword'],
+                        $_POST['inputFirstname'],
+                        $_POST['inputLastname'],
+                        $_POST['inputRole']);
+            } else {
                 header('Location: index.php?action=authentification');
             }
         }
-    }   
-    else
-    {
+    } else {
         $frontend->home($twig);
     }
 }
-catch(Exception $e)
-{
+catch (Exception $e) {
     $errorMessage = $e->getMessage();
     require('../src/blog/view/frontend/errorView.php');
 }
-
-

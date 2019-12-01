@@ -48,7 +48,7 @@ class Frontend
     public function edit($twig)
     {
         // 2 options : no data from the form or the data is present
-        if(isset($_POST['modif'])) {
+        if (isset($_POST['modif'])) {
             $commentManager = new CommentManager();
             $edit = $commentManager->editComment($_GET['id'], $_POST['modif']);
             header("Location:index.php?action=post&id=".$_GET['post_id']);
@@ -65,11 +65,11 @@ class Frontend
             $commentManager = new CommentManager();
             $comments = $commentManager->getCommentsList();
             echo $twig->render(
-                'administrationView.html.twig', 
-                    [
-                        'posts' => $posts,
-                        'comments' => $comments 
-                    ]
+                'administrationView.html.twig',
+                [
+                    'posts' => $posts,
+                    'comments' => $comments
+                ]
             );
         } else {
             header('Location: index.php');
