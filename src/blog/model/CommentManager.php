@@ -19,11 +19,11 @@ class CommentManager extends Manager
         $commentAll = [];
         foreach ($commentsReq as $comment) {
             $comment  = new Comment(
-                $comment['id'], 
-                $comment['post_id'], 
-                $comment['author'], 
-                $comment['comment'], 
-                $comment['publish'] , 
+                $comment['id'],
+                $comment['post_id'],
+                $comment['author'],
+                $comment['comment'],
+                $comment['publish'],
                 $comment['comment_date_fr']
             );
             array_push($commentAll, $comment);
@@ -46,15 +46,15 @@ class CommentManager extends Manager
         $commentAll = [];
         foreach ($commentsReq as $comment) {
             $comment  = new Comment(
-                $comment['id'], 
-                $comment['post_id'], 
-                $comment['author'], 
-                $comment['comment'], 
-                $comment['publish'], 
+                $comment['id'],
+                $comment['post_id'],
+                $comment['author'],
+                $comment['comment'],
+                $comment['publish'],
                 $comment['comment_date_fr']
             );
             array_push($commentAll, $comment);
-        } 
+        }
         $req->closeCursor();
         return $commentAll;	
     }

@@ -16,15 +16,15 @@ class PostManager extends Manager
             ORDER BY creation_date 
             DESC 
             LIMIT 0, 5'
-            );
+        );
         $req->execute();
         $postsReq = $req->fetchAll();
         $postAll = [];
         foreach ($postsReq as $reqPost) {
             $post  = new Post(
-                $reqPost['id'], 
-                $reqPost['title'], 
-                $reqPost['content'], 
+                $reqPost['id'],
+                $reqPost['title'],
+                $reqPost['content'],
                 $reqPost['creation_date_fr']
             );
             array_push($postAll, $post);
@@ -47,9 +47,9 @@ class PostManager extends Manager
         $req->execute(array($postId));
         $post = $req->fetch();
         return new Post(
-            $post['id'], 
+            $post['id'],
             $post['title'],
-            $post['content'], 
+            $post['content'],
             $post['creation_date_fr']
         );
     }

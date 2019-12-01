@@ -11,7 +11,7 @@ class Comment
     protected $comment_date;
     protected $publish;
 
-    public function __construct($id, $postId, $author, $comment, $publish , $comment_date)
+    public function __construct($id, $postId, $author, $comment, $publish, $comment_date)
     {
         $this->setId($id);
         $this->setPostId($postId);
@@ -23,7 +23,7 @@ class Comment
 
     public function id()
     {
-        return $this->id; 
+        return $this->id;
     }
     public function postId()
     {
