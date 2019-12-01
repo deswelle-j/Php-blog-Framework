@@ -56,7 +56,7 @@ class CommentManager extends Manager
             array_push($commentAll, $comment);
         }
         $req->closeCursor();
-        return $commentAll;	
+        return $commentAll;
     }
 
     public function postComment($postId, $author, $comment)
