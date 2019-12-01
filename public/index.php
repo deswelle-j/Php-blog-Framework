@@ -57,11 +57,11 @@ try {
         }
         if ($_GET['action'] == 'signup') {
             if (isset(
-                    $_POST['inputEmail'],
-                    $_POST['inputPassword'],
-                    $_POST['inputFirstname'],
-                    $_POST['inputLastname']
-                )) {
+                $_POST['inputEmail'],
+                $_POST['inputPassword'],
+                $_POST['inputFirstname'],
+                $_POST['inputLastname']
+            )) {
                     $frontend->userCreation(
                         $twig,
                         $_POST['inputEmail'],
@@ -75,12 +75,12 @@ try {
         }
         if ($_GET['action'] == 'createsuperuser') {
             if (isset(
-                    $_POST['inputEmail'],
-                    $_POST['inputPassword'],
-                    $_POST['inputFirstname'],
-                    $_POST['inputLastname'],
-                    $_POST['inputRole']
-                )) {
+                $_POST['inputEmail'],
+                $_POST['inputPassword'],
+                $_POST['inputFirstname'],
+                $_POST['inputLastname'],
+                $_POST['inputRole']
+            )) {
                     $frontend->superUserCreation(
                         $twig,
                         $_POST['inputEmail'],
