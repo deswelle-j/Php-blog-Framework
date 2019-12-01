@@ -2,7 +2,7 @@
 
 namespace Framework\Blog\Model;
 
-class Post 
+class Post
 {
     protected $id;
     protected $title;
@@ -42,16 +42,14 @@ class Post
 
     public function setTitle($title)
     {
-        if (is_string($title))
-        {
+        if (is_string($title)) {
             $this->title = $title;
         }
     }
 
     public function setContent($content)
     {
-        if (is_string($content))
-        {
+        if (is_string($content)) {
             $this->content = $content;
         }
     }

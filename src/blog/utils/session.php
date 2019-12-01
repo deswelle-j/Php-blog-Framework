@@ -2,9 +2,10 @@
 
 namespace Framework\Blog\Utils;
 
-class Session 
+class Session
 {
-    public function supprimeSession() {
+    public function supprimeSession()
+    {
         // $_SESSION = array();
         // if (ini_get("session.use_cookies")) {
         //     $params = session_get_cookie_params();
@@ -16,5 +17,3 @@ class Session
         session_destroy();
     }
 }
-
-

@@ -37,7 +37,7 @@ try {
             }
         }
         if ($_GET['action'] == 'edit') {
-            if (isset($_GET['id']) && $_GET['id'] >=0 && isset($_GET['post_id']) && $_GET['post_id'] >=0 ) {
+            if (isset($_GET['id']) && $_GET['id'] >=0 && isset($_GET['post_id']) && $_GET['post_id'] >=0) {
                 $frontend->edit();
             } else {
                 throw new Exception('Erreur : identifiant de commentaire ou identifiant de billet non envoyé');
@@ -47,7 +47,7 @@ try {
             if (isset($_SESSION['user']) && $_SESSION['user_role']) {
                 $frontend->authentification($twig, $_SESSION['user_role']);
             } elseif (isset($_POST['inputEmail'], $_POST['inputPassword'])) {
-                $frontend->userConnection($twig, $_POST['inputEmail'], $_POST['inputPassword'] );
+                $frontend->userConnection($twig, $_POST['inputEmail'], $_POST['inputPassword']);
             } else {
                 $frontend->userConnection($twig);
             }
@@ -56,30 +56,39 @@ try {
             $frontend->userLogOut();
         }
         if ($_GET['action'] == 'signup') {
-            if (isset($_POST['inputEmail'],
-                $_POST['inputPassword'],
-                $_POST['inputFirstname'],
-                $_POST['inputLastname'])) {
-                    $frontend->userCreation($twig,
+            if (isset(
+                    $_POST['inputEmail'],
+                    $_POST['inputPassword'],
+                    $_POST['inputFirstname'],
+                    $_POST['inputLastname']
+                )) {
+                    $frontend->userCreation(
+                        $twig,
                         $_POST['inputEmail'],
                         $_POST['inputPassword'],
                         $_POST['inputFirstname'],
-                        $_POST['inputLastname']);
+                        $_POST['inputLastname']
+                    );
             } else {
                 $frontend->userCreation($twig);
             }
         }
         if ($_GET['action'] == 'createsuperuser') {
-            if (isset($_POST['inputEmail'],
-                $_POST['inputPassword'],
-                $_POST['inputFirstname'],
-                $_POST['inputLastname'],
-                $_POST['inputRole'])) {
-                    $frontend->superUserCreation($twig, $_POST['inputEmail'],
+            if (isset(
+                    $_POST['inputEmail'],
+                    $_POST['inputPassword'],
+                    $_POST['inputFirstname'],
+                    $_POST['inputLastname'],
+                    $_POST['inputRole']
+                )) {
+                    $frontend->superUserCreation(
+                        $twig,
+                        $_POST['inputEmail'],
                         $_POST['inputPassword'],
                         $_POST['inputFirstname'],
                         $_POST['inputLastname'],
-                        $_POST['inputRole']);
+                        $_POST['inputRole']
+                    );
             } else {
                 header('Location: index.php?action=authentification');
             }
@@ -87,8 +96,7 @@ try {
     } else {
         $frontend->home($twig);
     }
-}
-catch (Exception $e) {
+} catch (Exception $e) {
     $errorMessage = $e->getMessage();
     require('../src/blog/view/frontend/errorView.php');
 }

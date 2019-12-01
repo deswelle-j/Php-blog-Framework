@@ -25,10 +25,10 @@ class UsersManager extends Manager
         $req->bindValue(':role', 'visitor', PDO::PARAM_STR);
         $req->bindValue(':firstname', $firstname, PDO::PARAM_STR);
         $req->bindValue(':lastname', $lastname, PDO::PARAM_STR);
-        $req->execute();  
+        $req->execute();
     }
 
-    public function superUserCreation($login, $password, $firstname, $lastname , $role)
+    public function superUserCreation($login, $password, $firstname, $lastname, $role)
     {
         $db = $this->dbConnect();
         $req= $db->prepare('INSERT INTO users (email, password, role, firstname, lastname)
