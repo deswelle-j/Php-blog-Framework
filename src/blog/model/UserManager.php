@@ -3,7 +3,7 @@ namespace Framework\Blog\Model;
 
 use PDO;
 
-class UsersManager extends Manager
+class UserManager extends Manager
 {
     public function userAuthentification($login)
     {
@@ -13,6 +13,33 @@ class UsersManager extends Manager
         $req->execute();
         $user = $req->fetchAll();
         return $user;
+    }
+
+    public function getUsers()
+    {
+        $db = $this->dbConnect();
+        $req = $db->query(
+            'SELECT id, email, role, firstname, lastname 
+            FROM users 
+            ORDER BY email 
+            DESC 
+            '
+        );
+        $req->execute();
+        $usersReq = $req->fetchAll();
+        $userAll = [];
+        foreach ($usersReq as $reqUser) {
+            $user  = new User(
+                $reqUser['id'],
+                $reqUser['email'],
+                $reqUser['role'],
+                $reqUser['firstname'],
+                $reqUser['lastname']
+            );
+            array_push($userAll, $user);
+        }
+        $req->closeCursor();
+        return $userAll;
     }
 
     public function userCreation($login, $password, $firstname, $lastname)
