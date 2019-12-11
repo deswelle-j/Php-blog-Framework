@@ -3,15 +3,18 @@ require_once('../conf/database.php');
 require('../vendor/autoload.php');
 
 use Framework\Blog\Controller\Frontend;
+use Framework\Blog\Controller\Backend;
 
 session_start();
 $loader = new \Twig\Loader\FilesystemLoader('../src/blog/view/frontend');
+$loader->addPath('../src/blog/view/frontend', 'admin');
 $twig = new \Twig\Environment($loader, [
     'debug' => true
 ]);
 $twig->addExtension(new \Twig\Extension\DebugExtension());
 
 $frontend =  new Frontend();
+$backend =  new Backend();
 
 try {
     if (isset($_GET['action'])) {
@@ -45,15 +48,15 @@ try {
         }
         if ($_GET['action'] == 'authentification') {
             if (isset($_SESSION['user']) && $_SESSION['user_role']) {
-                $frontend->authentification($twig, $_SESSION['user_role']);
+                $backend->authentification($twig, $_SESSION['user_role']);
             } elseif (isset($_POST['inputEmail'], $_POST['inputPassword'])) {
-                $frontend->userConnection($twig, $_POST['inputEmail'], $_POST['inputPassword']);
+                $backend->userConnection($twig, $_POST['inputEmail'], $_POST['inputPassword']);
             } else {
-                $frontend->userConnection($twig);
+                $backend->userConnection($twig);
             }
         }
         if ($_GET['action'] == 'logOut') {
-            $frontend->userLogOut();
+            $backend->userLogOut();
         }
         if ($_GET['action'] == 'signup') {
             if (isset(
@@ -73,6 +76,11 @@ try {
                 $frontend->userCreation($twig);
             }
         }
+        if ($_GET['action'] == 'superuserlist') {
+            if (isset($_SESSION['user']) && $_SESSION['user_role']) {
+                $backend->superUserList($twig, $_SESSION['user_role']);
+            }
+        }
         if ($_GET['action'] == 'createsuperuser') {
             if (isset(
                 $_POST['inputEmail'],
@@ -81,7 +89,7 @@ try {
                 $_POST['inputLastname'],
                 $_POST['inputRole']
             )) {
-                    $frontend->superUserCreation(
+                    $backend->superUserCreation(
                         $twig,
                         $_POST['inputEmail'],
                         $_POST['inputPassword'],
