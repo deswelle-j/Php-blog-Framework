@@ -11,7 +11,7 @@ class Frontend
 {
     public function home($twig)
     {
-
+        
         echo $twig->render('home.html.twig');
     }
 
