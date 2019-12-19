@@ -64,7 +64,7 @@ class Backend
         if ($role === 'admin') {
             $userManager = new UserManager();
             $users = $userManager->getUsers();
-            echo $twig->render('adminSuperuserView.html.twig',
+            echo $twig->render('@admin/adminSuperuserView.html.twig',
             [
                 'users' => $users
             ]);

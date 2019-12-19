@@ -7,7 +7,7 @@ use Framework\Blog\Controller\Backend;
 
 session_start();
 $loader = new \Twig\Loader\FilesystemLoader('../src/blog/view/frontend');
-$loader->addPath('../src/blog/view/frontend', 'admin');
+$loader->addPath('../src/blog/view/backend', 'admin');
 $twig = new \Twig\Environment($loader, [
     'debug' => true
 ]);
