@@ -11,8 +11,9 @@ class Frontend
 {
     public function home($twig)
     {
-        
-        echo $twig->render('home.html.twig');
+        $postManager = new PostManager();
+        $posts = $postManager->lastPosts();
+        echo $twig->render('home.html.twig', ['posts' => $posts]);
     }
 
     public function listPosts($twig)

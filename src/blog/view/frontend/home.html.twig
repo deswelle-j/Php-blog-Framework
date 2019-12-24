@@ -74,47 +74,41 @@
       <div class="container">
         <div class="row">
           <div class="col-md-12 text-center mb50">
-            <h2 class="mt0">Our Blog</h2>
+            <h2 class="mt0">Sur le Blog</h2>
           </div>
         </div>
-        <div class="row">
-          <div class="col-md-6">
-            <p><img src="img/hero_bg_1.jpg" alt="Free Bootstrap Template by uicookies.com" class="img-responsive"></p>
-            <h3 class="mt0"><a href="#" class="hover-reverse">The Big Oxmox advised her not to do so because there were thousands</a></h3>
-            <p class="text-mute mb40">July 25, 2017 &bull; <i class="icon-bubble"></i> 3 Comments</p>
-          </div>
-          <div class="col-md-6">
-            <ul class="probootstrap-blog-list">
+        {% for post in posts %}
+          {% if loop.index == 1 %}
+            <div class="col-md-6">
+              <p><img src="img/hero_bg_1.jpg" alt="Free Bootstrap Template by uicookies.com" class="img-responsive"></p>
+              <h3 class="mt0">
+                <a href="index.php?action=post&amp;id={{post.id}}" class="hover-reverse">{{post.title }}</a>
+              </h3>
+              <p class="text-mute mb40">{{post.dateCreation}} &bull; <i class="icon-bubble"></i> 3 Comments</p>
+            </div>
+            <div class="col-md-6">
+              <ul class="probootstrap-blog-list">
+          {% else %}
               <li>
-                <a href="#">
+                <a href="index.php?action=post&amp;id={{post.id}}">
                   <figure class="probootstrap-image"><img src="img/img_1.jpg" alt="Free Bootstrap Template by uicookies.com" class="img-responsive"></figure>
                   <div class="probootstrap-text">
-                    <h3 class="mt0 mb10">Because there were thousands of bad Commas</h3>
-                    <p class="text-mute mb20">July 25, 2017 &bull; <i class="icon-bubble"></i> 3 Comments</p>
+                    <h3 class="mt0 mb10">
+                      <a href="index.php?action=post&amp;id={{post.id}}" class="hover-reverse">
+                            {{post.title }}
+                      </a>
+                    </h3>
+                    <p class="text-mute mb20">{{post.dateCreation}} &bull; <i class="icon-bubble"></i> 3 Comments</p>
                   </div>
                 </a>
               </li>
-              <li>
-                <a href="#">
-                  <figure class="probootstrap-image"><img src="img/img_2.jpg" alt="Free Bootstrap Template by uicookies.com" class="img-responsive"></figure>
-                  <div class="probootstrap-text">
-                    <h3 class="mt0 mb10">She packed her seven versalia</h3>
-                    <p class="text-mute mb20">July 25, 2017 &bull; <i class="icon-bubble"></i> 3 Comments</p>
-                  </div>
-                </a>
-              </li>
-              <li>
-                <a href="#">
-                  <figure class="probootstrap-image"><img src="img/img_3.jpg" alt="Free Bootstrap Template by uicookies.com" class="img-responsive"></figure>
-                  <div class="probootstrap-text">
-                    <h3 class="mt0 mb10">Wild Question Marks and devious Semikoli</h3>
-                    <p class="text-mute mb20">July 25, 2017 &bull; <i class="icon-bubble"></i> 3 Comments</p>
-                  </div>
-                </a>
-              </li>
+          {% endif %}
+
+          {% if loop.last %}
             </ul>
           </div>
-        </div>
+          {% endif %}        
+        {% endfor %}
       </div>
     </section>
     <section id="contact-section" class="probootstrap-section">
