@@ -1,5 +1,5 @@
 <?php
-require_once('../conf/database.php');
+require_once('../conf/env.php');
 require('../vendor/autoload.php');
 
 use Framework\Blog\Controller\Frontend;
@@ -96,6 +96,26 @@ try {
                         $_POST['inputFirstname'],
                         $_POST['inputLastname'],
                         $_POST['inputRole']
+                    );
+            } else {
+                header('Location: index.php?action=authentification');
+            }
+        }
+        if ($_GET['action'] == 'mail') {
+            if (isset(
+                $_POST['fname'],
+                $_POST['fname'],
+                $_POST['email'],
+                $_POST['subject'],
+                $_POST['message']
+            )) {
+                    $frontend->sendContactMail(
+                        $twig,
+                        $_POST['fname'],
+                        $_POST['lname'],
+                        $_POST['email'],
+                        $_POST['subject'],
+                        $_POST['message']
                     );
             } else {
                 header('Location: index.php?action=authentification');
