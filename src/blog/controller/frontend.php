@@ -79,4 +79,16 @@ class Frontend
             echo $twig->render('signUpView.html.twig');
         }
     }
+    public function sendContactMail($twig, $fname = false, $lname = false, $email = false, $subject = false, $message = false)
+    {
+        var_dump($fname, $lname, $email, $subject, $message);
+        if ($fname !== false && $lname !== false && $email !== false && $subject !== false && $message !== false) {
+            var_dump('on entre');
+            $to_email = TO_EMAIL ;
+            mail($to_email, $subject, $message);
+            header('Location: index.php');
+        } else {
+            header('Location: index.php');
+        }
+    }
 }
