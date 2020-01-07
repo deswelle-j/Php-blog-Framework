@@ -7,15 +7,22 @@ class Post
     protected $id;
     protected $title;
     protected $author;
+    protected $kicker;
     protected $content;
     protected $date_creation;
+    protected $modification_date;
+    protected $published;
 
-    public function __construct($id, $title, $content, $date_creation)
+    public function __construct($id, $title, $kicker, $author, $content, $date_creation, $modification_date, $published)
     {
         $this->setId($id);
         $this->setTitle($title);
+        $this->setKicker($kicker);
+        $this->setAuthor($author);
         $this->setContent($content);
         $this->setDateCreation($date_creation);
+        $this->setModificationDate($modification_date);
+        $this->setPublished($published);
     }
 
     public function id()
@@ -26,6 +33,14 @@ class Post
     {
         return $this->title;
     }
+    public function author()
+    {
+        return $this->author;
+    }
+    public function kicker()
+    {
+        return $this->kicker;
+    }
     public function content()
     {
         return $this->content;
@@ -33,6 +48,10 @@ class Post
     public function dateCreation()
     {
         return $this->date_creation;
+    }
+    public function modificationDate()
+    {
+        return $this->modificationDate;
     }
 
     public function setId($id)
@@ -47,6 +66,18 @@ class Post
         }
     }
 
+    public function setKicker($kicker)
+    {
+        if (is_string($kicker)) {
+            $this->kicker = $kicker;
+        }
+    }
+
+    public function setAuthor($author)
+    {
+        $this->author = $author;
+    }
+
     public function setContent($content)
     {
         if (is_string($content)) {
@@ -57,5 +88,15 @@ class Post
     public function setDateCreation($date_creation)
     {
         $this->date_creation = $date_creation;
+    }
+
+    public function setModificationDate($modification_date)
+    {
+        $this->modificaiotn_date = $modification_date;
+    }
+
+    public function setPublished($published)
+    {
+        $this->published = $published;
     }
 }

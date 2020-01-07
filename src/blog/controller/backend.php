@@ -11,7 +11,7 @@ class Backend
 {
     public function authentification($twig, $role)
     {
-        if ($role && $role == 'admin') {
+        if ($role !== 'visitor') {
             $postManager = new PostManager();
             $posts = $postManager->getPosts();
             $commentManager = new CommentManager();
