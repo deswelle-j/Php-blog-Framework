@@ -11,9 +11,15 @@ class Backend
 {
     public function authentification($twig, $role)
     {
+        var_dump($_SESSION);
         if ($role !== 'visitor') {
+            var_dump($role);
             $postManager = new PostManager();
-            $posts = $postManager->getPosts();
+            $posts = null;
+            if ($role === 'editor' || $role === 'admin') {
+                $posts = $postManager->getPosts();
+            }
+            
             $commentManager = new CommentManager();
             $comments = $commentManager->getCommentsList();
             echo $twig->render(
@@ -47,6 +53,7 @@ class Backend
                     $_SESSION['user'] = $user[0]['id'];
                     $_SESSION['user_fullname'] = $user[0]['firstname'] . ' ' . $user[0]['lastname'];
                     $_SESSION['user_role'] = $user[0]['role'];
+                    $_SESSION['username'] = $user[0]['username'];
                     $this->authentification($twig, $_SESSION['user_role']);
                 } else {
                     throw new Exception('Utilisateur non trouvé ou mot de passe incorrect');
