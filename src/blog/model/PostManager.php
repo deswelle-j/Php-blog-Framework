@@ -3,6 +3,7 @@
 namespace Framework\Blog\Model;
 
 use Framework\Blog\Model\Post;
+use \PDO;
 
 class PostManager extends Manager
 {
@@ -77,32 +78,32 @@ class PostManager extends Manager
     public function getAdminPosts( $username = false)
     {
         $db = $this->dbConnect();
-        if ($username !== false) {
+        if ($username === false) {
             $req = $db->query(
                 'SELECT posts.id, title, content, kicker, username, published, 
                 DATE_FORMAT(creation_date, \'%d/%m/%Y à %Hh%imin%ss\') AS creation_date_fr,
                 DATE_FORMAT(modification_date, \'%d/%m/%Y à %Hh%imin%ss\') AS modification_date_fr 
                 FROM posts 
                 LEFT JOIN users ON posts.author = users.id
-                WHERE published = 1
                 ORDER BY creation_date 
                 DESC 
                 LIMIT 0, 5'
             ); 
             $req->execute();
         } else {
-            $req = $db->query(
+            $req = $db->prepare(
                 'SELECT posts.id, title, content, kicker, username, published, 
                 DATE_FORMAT(creation_date, \'%d/%m/%Y à %Hh%imin%ss\') AS creation_date_fr,
                 DATE_FORMAT(modification_date, \'%d/%m/%Y à %Hh%imin%ss\') AS modification_date_fr 
                 FROM posts 
                 LEFT JOIN users ON posts.author = users.id
-                WHERE published = 1 AND username = 
-                ORDER BY creation_date 
+                WHERE  users.id = :user 
+                ORDER BY creation_date_fr 
                 DESC 
                 LIMIT 0, 5'
             );
-            $req->execute(array($username));
+            $req->bindValue(':user', $username, PDO::PARAM_INT);
+            $req->execute();
         }
         $postsReq = $req->fetchAll();
         $postAll = [];

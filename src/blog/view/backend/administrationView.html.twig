@@ -6,7 +6,7 @@
     <table class="table table-striped table-hover table-bordered">
         <thead class="thead-dark">
             <tr>
-                <th>id</th><th>titre</th><th>contenu</th><th>date de creation</th><th></th>
+                <th>id</th><th>titre</th><th>contenu</th><th>date de creation</th><th>Publié</th><th>Action</th>
             </tr>
         </thead>
         {% for post in posts %}
@@ -15,6 +15,19 @@
                     <td>{{post.title }}</td>
                     <td>{{post.content}}</td>
                     <td>{{post.dateCreation}}</td>
+                    <td>{{post.published ? 'Oui' : 'Non'}}</td>
+                    <td>
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Action
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" href="#">{{post.published ? 'Dépublier' : 'Publier'}}</a>
+                                <a class="dropdown-item" href="#">Editer</a>
+                                <a class="dropdown-item" href="#">Supprimer</a>
+                            </div>
+                        </div>
+                    </td>
                 </tr>
                         
         {% endfor %}

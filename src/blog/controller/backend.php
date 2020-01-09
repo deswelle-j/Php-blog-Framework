@@ -11,13 +11,13 @@ class Backend
 {
     public function authentification($twig, $role)
     {
-        var_dump($_SESSION);
         if ($role !== 'visitor') {
-            var_dump($role);
             $postManager = new PostManager();
             $posts = null;
             if ($role === 'editor' || $role === 'admin') {
-                $posts = $postManager->getPosts();
+                $posts = $postManager->getAdminPosts();
+            } else {
+                $posts = $postManager->getAdminPosts($_SESSION['user']);
             }
             
             $commentManager = new CommentManager();
