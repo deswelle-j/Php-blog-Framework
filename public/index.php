@@ -39,9 +39,16 @@ try {
                 throw new Exception('Aucun identifiant de billet envoyé');
             }
         }
-        if ($_GET['action'] == 'edit') {
+        if ($_GET['action'] == 'edit-post') {
             if (isset($_GET['id']) && $_GET['id'] >=0 && isset($_GET['post_id']) && $_GET['post_id'] >=0) {
-                $frontend->edit();
+                $backend->editPost();
+            } else {
+                throw new Exception('Erreur : identifiant de commentaire ou identifiant de billet non envoyé');
+            }
+        }
+        if ($_GET['action'] == 'delete-post') {
+            if (isset($_GET['id']) && $_GET['id'] >=0) {
+                $backend->deletePost($twig, $_GET['id']);
             } else {
                 throw new Exception('Erreur : identifiant de commentaire ou identifiant de billet non envoyé');
             }

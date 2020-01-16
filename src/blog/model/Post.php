@@ -53,6 +53,10 @@ class Post
     {
         return $this->modificationDate;
     }
+    public function published()
+    {
+        return $this->published;
+    }
 
     public function setId($id)
     {

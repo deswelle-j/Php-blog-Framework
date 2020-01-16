@@ -4,7 +4,7 @@ namespace Framework\Blog\Controller;
 
 use Framework\Blog\Model\PostManager;
 use Framework\Blog\Model\CommentManager;
-use Framework\Blog\Model\UsersManager;
+use Framework\Blog\Model\UserManager;
 use Framework\Blog\Utils\Session;
 
 class Frontend
@@ -46,18 +46,6 @@ class Frontend
         }
     }
 
-    public function edit($twig)
-    {
-        // 2 options : no data from the form or the data is present
-        if (isset($_POST['modif'])) {
-            $commentManager = new CommentManager();
-            $edit = $commentManager->editComment($_GET['id'], $_POST['modif']);
-            header("Location:index.php?action=post&id=".$_GET['post_id']);
-        } else {
-            require('../src/blog/view/frontend/editView.php');
-        }
-    }
-
     public function userCreation($twig, $email = false, $password = false, $firstname = false, $lastname = false)
     {
         
@@ -68,7 +56,7 @@ class Frontend
             $lastname = trim($lastname);
             if (filter_var($login, FILTER_VALIDATE_EMAIL) && !empty($password) && !empty($firstname) &&
                 !empty($lastname)) {
-                $userManager = new UsersManager();
+                $userManager = new UserManager();
                 $password = password_hash($password, PASSWORD_DEFAULT);
                 $user = $userManager->userCreation($login, $password, $firstname, $lastname);
                 header('Location: index.php');

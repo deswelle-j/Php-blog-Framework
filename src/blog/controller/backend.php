@@ -11,13 +11,13 @@ class Backend
 {
     public function authentification($twig, $role)
     {
-        var_dump($_SESSION);
         if ($role !== 'visitor') {
-            var_dump($role);
             $postManager = new PostManager();
             $posts = null;
             if ($role === 'editor' || $role === 'admin') {
-                $posts = $postManager->getPosts();
+                $posts = $postManager->getAdminPosts();
+            } else {
+                $posts = $postManager->getAdminPosts($_SESSION['user']);
             }
             
             $commentManager = new CommentManager();
@@ -96,6 +96,26 @@ class Backend
             }
         } else {
             echo $twig->render('@admin/administrationView.html.twig');
+        }
+    }
+
+    public function edit($twig)
+    {
+        // 2 options : no data from the form or the data is present
+        if (isset($_POST['modif'])) {
+            $commentManager = new CommentManager();
+            $edit = $commentManager->editComment($_GET['id'], $_POST['modif']);
+            header("Location:index.php?action=post&id=".$_GET['post_id']);
+        } else {
+            require('../src/blog/view/frontend/editView.php');
+        }
+    }
+    public function deletePost($twig, $postid) {
+        var_dump($postid);
+        if (isset($postid)) {
+            $postManager = new PostManager();
+            $postManager->removePost($postid);
+            header('Location: Location: index.php?action=authentification');
         }
     }
 }
