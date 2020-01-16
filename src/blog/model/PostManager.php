@@ -75,10 +75,10 @@ class PostManager extends Manager
         return $postAll;
     }
 
-    public function getAdminPosts( $username = false)
+    public function getAdminPosts( $user = false)
     {
         $db = $this->dbConnect();
-        if ($username === false) {
+        if ($user === false) {
             $req = $db->query(
                 'SELECT posts.id, title, content, kicker, username, published, 
                 DATE_FORMAT(creation_date, \'%d/%m/%Y à %Hh%imin%ss\') AS creation_date_fr,
@@ -102,7 +102,7 @@ class PostManager extends Manager
                 DESC 
                 LIMIT 0, 5'
             );
-            $req->bindValue(':user', $username, PDO::PARAM_INT);
+            $req->bindValue(':user', $user, PDO::PARAM_INT);
             $req->execute();
         }
         $postsReq = $req->fetchAll();
@@ -143,5 +143,15 @@ class PostManager extends Manager
             $post['content'],
             $post['creation_date_fr']
         );
+    }
+
+    public function removePost($postid) {
+        $db = $this->dbConnect();
+        $req = $db->prepare(
+            'DELETE FROM posts WHERE id = :id'
+        );
+        $req->bindValue(':id', $postid, PDO::PARAM_INT);
+        $req->execute();
+        return;
     }
 }
