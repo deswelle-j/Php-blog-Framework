@@ -128,21 +128,42 @@ class PostManager extends Manager
     {
         $db = $this->dbConnect();
         $req = $db->prepare(
-            'SELECT id,
-            title,
-            content,
-            DATE_FORMAT(creation_date, \'%d/%m/%Y à %Hh%imin%ss\') AS creation_date_fr 
+            'SELECT posts.id, title, content, kicker, username, published, 
+            DATE_FORMAT(creation_date, \'%d/%m/%Y à %Hh%imin%ss\') AS creation_date_fr,
+            DATE_FORMAT(modification_date, \'%d/%m/%Y à %Hh%imin%ss\') AS modification_date_fr 
             FROM posts 
-            WHERE id = ?'
+            LEFT JOIN users ON posts.author = users.id
+            WHERE   posts.id = :id'
         );
-        $req->execute(array($postId));
+        $req->bindValue(':id', $postId, PDO::PARAM_INT);
+        $req->execute();
         $post = $req->fetch();
         return new Post(
             $post['id'],
             $post['title'],
+            $post['kicker'],
+            $post['username'],
             $post['content'],
-            $post['creation_date_fr']
+            $post['creation_date_fr'],
+            $post['modification_date_fr'],
+            $post['published']
         );
+    }
+
+    public function updatePost($postid, $title, $kicker, $content)
+    {
+        $db = $this->dbConnect();
+        $req = $db->prepare(
+            'UPDATE posts
+            SET title = :title, kicker = :kicker, content = :content
+             WHERE id = :id'
+        );
+        $req->bindValue(':id', $postid, PDO::PARAM_INT);
+        $req->bindValue(':title', $title, PDO::PARAM_STR);
+        $req->bindValue(':kicker', $kicker, PDO::PARAM_STR);
+        $req->bindValue(':content', $content, PDO::PARAM_STR);
+        $req->execute();
+        return;
     }
 
     public function removePost($postid) {

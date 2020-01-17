@@ -103,19 +103,37 @@ class Backend
     {
         // 2 options : no data from the form or the data is present
         if (isset($_POST['modif'])) {
-            $commentManager = new CommentManager();
-            $edit = $commentManager->editComment($_GET['id'], $_POST['modif']);
+            $postManager = new PostManager();
+            $edit = $postManager->editPost($_GET['id'], $_POST['modif']);
             header("Location:index.php?action=post&id=".$_GET['post_id']);
         } else {
             require('../src/blog/view/frontend/editView.php');
         }
     }
+
+    public function editPost($twig, $postid)
+    {
+        if (isset($postid)) {
+            $postManager = new PostManager();
+            $post = $postManager->getPost($_GET['id']);
+            echo $twig->render('@admin/adminEditPostView.html.twig', [
+                'post' => $post
+            ]);
+        }
+    }
+
+    public function savePost($twig, $id, $title, $kicker, $content)
+    {
+        $postManager = new PostManager();
+        $post = $postManager->updatePost($id, $title, $kicker, $content);
+        header('Location: index.php?action=authentification');
+    }
+
     public function deletePost($twig, $postid) {
-        var_dump($postid);
         if (isset($postid)) {
             $postManager = new PostManager();
             $postManager->removePost($postid);
-            header('Location: Location: index.php?action=authentification');
+            header('Location: index.php?action=authentification');
         }
     }
 }

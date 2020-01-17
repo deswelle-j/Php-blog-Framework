@@ -40,10 +40,23 @@ try {
             }
         }
         if ($_GET['action'] == 'edit-post') {
-            if (isset($_GET['id']) && $_GET['id'] >=0 && isset($_GET['post_id']) && $_GET['post_id'] >=0) {
-                $backend->editPost();
+            if (isset($_GET['id']) && $_GET['id'] >=0) {
+                $backend->editPost($twig, $_GET['id']);
             } else {
                 throw new Exception('Erreur : identifiant de commentaire ou identifiant de billet non envoyé');
+            }
+        }
+        if ($_GET['action'] == 'save-post') {
+            if (isset($_GET['id'], 
+                $_POST['inputTitle'],
+                $_POST['inputKicker'],
+                $_POST['inputContent']) 
+                && $_GET['id'] >=0) {
+                $backend->savePost($twig, $_GET['id'], $_POST['inputTitle'], $_POST['inputKicker'], $_POST['inputContent']);
+            } else {
+                var_dump($_POST);
+                var_dump($_GET);
+                throw new Exception('Erreur : champs de billet ou identifiant de billet non envoyé');
             }
         }
         if ($_GET['action'] == 'delete-post') {

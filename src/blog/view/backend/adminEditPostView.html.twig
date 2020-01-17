@@ -1,0 +1,42 @@
+{% extends "@admin/AdminBase.html.twig" %}
+
+{% block title %}Accueil{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-sm">
+            <div class="text-center">  
+                <form action="index.php?action=save-post&id={{post.id}}" method="post" class="form-signin">
+                    <h1 class="h3 mb-3 font-weight-normal">Edition du billet</h1>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label" for="inputTitle">Titre du Billet</label>
+                        <div class="col-sm-10">
+                            <input type="title" id="inputTitle" name="inputTitle" value="{{post.title}}" class="form-control" placeholder="Titre" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label" for="inputkicker">Chapeau du Billet</label>
+                        <div class="col-sm-10">
+                            <input type="kicker" id="inputKicker" name="inputKicker" value="{{post.kicker}}" class="form-control" placeholder="Chapeau" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label" for="inputContent">Contenu</label>
+                        <div class="col-sm-10">
+                            <textarea class="form-control" name="inputContent" id="inputContent" cols="30" rows="10">{{post.content}}</textarea>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-10">
+                        <button type="submit" class="btn btn-lg btn-primary btn-block">Valider</button>    
+                    </div>
+                    </div>
+                    
+                </form> 
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
