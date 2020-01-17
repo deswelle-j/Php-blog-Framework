@@ -166,6 +166,34 @@ class PostManager extends Manager
         return;
     }
 
+    public function updatePulicationPost($postid)
+    {
+        $db = $this->dbConnect();
+        $req = $db->prepare(
+            'SELECT id, published
+            FROM posts
+            WHERE id = :id'
+        );
+        $req->bindValue(':id', $postid, PDO::PARAM_INT);
+        $req->execute();
+        $post = $req->fetch();
+        $req->closeCursor();
+        if ($post['published'] === '1' ) {
+            $publication = 0;
+        } else {
+            $publication = 1;
+        }
+        $req = $db->prepare(
+            'UPDATE posts
+            SET published = :published 
+            WHERE id = :id'
+        );
+        $req->bindValue(':id', $postid, PDO::PARAM_INT);
+        $req->bindValue(':published', $publication, PDO::PARAM_INT);
+        $req->execute();
+        return;
+    }
+
     public function removePost($postid) {
         $db = $this->dbConnect();
         $req = $db->prepare(

@@ -122,6 +122,15 @@ class Backend
         }
     }
 
+    public function publishPost($twig, $postid)
+    {
+        if (isset($postid)) {
+            $postManager = new PostManager();
+            $post = $postManager->updatePulicationPost($_GET['id']);
+            // header("Location: index.php?action=authentification");
+        }
+    }
+
     public function savePost($twig, $id, $title, $kicker, $content)
     {
         $postManager = new PostManager();
