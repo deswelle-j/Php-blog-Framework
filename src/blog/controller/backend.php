@@ -127,7 +127,7 @@ class Backend
         if (isset($postid)) {
             $postManager = new PostManager();
             $post = $postManager->updatePulicationPost($_GET['id']);
-            // header("Location: index.php?action=authentification");
+            header("Location: index.php?action=authentification");
         }
     }
 
