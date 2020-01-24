@@ -9,6 +9,7 @@
                 <th>id</th><th>titre</th><th>contenu</th><th>date de creation</th><th>Publié</th><th>Action</th>
             </tr>
         </thead>
+        <tbody>
         {% for post in posts %}
                 <tr>
                     <td>{{post.id}}</td>
@@ -31,6 +32,16 @@
                 </tr>
                         
         {% endfor %}
+            <tr>
+                <td>
+                    <div>
+                        <a href="index.php?action=edit-post">Ajouter un post</a>
+                    </div>
+                </td>
+                    
+            </tr>
+        </tbody>
+                
     </table>
     <h3>Les commentaires</h3>
     <table class="table table-striped table-hover table-bordered">

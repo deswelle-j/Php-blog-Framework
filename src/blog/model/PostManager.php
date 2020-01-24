@@ -150,19 +150,42 @@ class PostManager extends Manager
         );
     }
 
-    public function updatePost($postid, $title, $kicker, $content)
+    public function updatePost($postid, $title, $kicker, $content, $author)
+    {
+
+        $db = $this->dbConnect();
+        $req = $db->prepare(
+            'UPDATE posts SET title = :title,
+             kicker = :kicker, 
+             author = :author, 
+             content = :content, 
+             modification_date = NOW(), 
+             published = 0 
+             WHERE id = :id
+            '
+        );
+        $req->bindValue(':id', intval($postid), PDO::PARAM_INT);
+        $req->bindValue(':title', $title, PDO::PARAM_STR);
+        $req->bindValue(':kicker', $kicker, PDO::PARAM_STR);
+        $req->bindValue(':author', intval($author), PDO::PARAM_INT);
+        $req->bindValue(':content', $content, PDO::PARAM_STR);
+        $req->execute();
+        return;
+    }
+
+    public function insertPost($title, $kicker, $content, $author)
     {
         $db = $this->dbConnect();
         $req = $db->prepare(
-            'UPDATE posts
-            SET title = :title, kicker = :kicker, content = :content
-             WHERE id = :id'
+            'INSERT INTO posts (title, kicker, content, author, creation_date, modification_date, published) 
+            VALUES ( :title, :kicker, :content, :author, NOW(), NOW(), 0)'
         );
-        $req->bindValue(':id', $postid, PDO::PARAM_INT);
         $req->bindValue(':title', $title, PDO::PARAM_STR);
         $req->bindValue(':kicker', $kicker, PDO::PARAM_STR);
+        $req->bindValue(':author', intval($author), PDO::PARAM_INT);
         $req->bindValue(':content', $content, PDO::PARAM_STR);
         $req->execute();
+        $req->closeCursor();
         return;
     }
 

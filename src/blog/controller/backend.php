@@ -11,6 +11,7 @@ class Backend
 {
     public function authentification($twig, $role)
     {
+        var_dump($_SESSION);
         if ($role !== 'visitor') {
             $postManager = new PostManager();
             $posts = null;
@@ -111,13 +112,17 @@ class Backend
         }
     }
 
-    public function editPost($twig, $postid)
+    public function editPost($twig)
     {
-        if (isset($postid)) {
+        if (isset($_GET['id'])) {
             $postManager = new PostManager();
             $post = $postManager->getPost($_GET['id']);
             echo $twig->render('@admin/adminEditPostView.html.twig', [
                 'post' => $post
+            ]);
+        } else {
+            echo $twig->render('@admin/adminEditPostView.html.twig', [
+                
             ]);
         }
     }
@@ -131,10 +136,14 @@ class Backend
         }
     }
 
-    public function savePost($twig, $id, $title, $kicker, $content)
+    public function savePost($twig, $title, $kicker, $content)
     {
         $postManager = new PostManager();
-        $post = $postManager->updatePost($id, $title, $kicker, $content);
+        if (isset($_GET['id']) && $_GET['id'] >= 0) {
+            $post = $postManager->updatePost($_GET['id'], $title, $kicker, $content, $_SESSION['user']);
+        } else {
+            $post = $postManager->insertPost( $title, $kicker, $content, $_SESSION['user']);
+        }
         header('Location: index.php?action=authentification');
     }
 

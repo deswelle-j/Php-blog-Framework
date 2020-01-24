@@ -40,19 +40,15 @@ try {
             }
         }
         if ($_GET['action'] == 'edit-post') {
-            if (isset($_GET['id']) && $_GET['id'] >=0) {
-                $backend->editPost($twig, $_GET['id']);
-            } else {
-                throw new Exception('Erreur : identifiant de commentaire ou identifiant de billet non envoyé');
-            }
+                $backend->editPost($twig);
         }
         if ($_GET['action'] == 'save-post') {
-            if (isset($_GET['id'], 
+            if (isset( 
                 $_POST['inputTitle'],
                 $_POST['inputKicker'],
                 $_POST['inputContent']) 
-                && $_GET['id'] >=0) {
-                $backend->savePost($twig, $_GET['id'], $_POST['inputTitle'], $_POST['inputKicker'], $_POST['inputContent']);
+                ) {
+                $backend->savePost($twig, $_POST['inputTitle'], $_POST['inputKicker'], $_POST['inputContent']);
             } else {
                 throw new Exception('Erreur : champs de billet ou identifiant de billet non envoyé');
             }
