@@ -11,7 +11,6 @@ class Backend
 {
     public function authentification($twig, $role)
     {
-        var_dump($_SESSION);
         if ($role !== 'visitor') {
             $postManager = new PostManager();
             $posts = null;
@@ -20,7 +19,6 @@ class Backend
             } else {
                 $posts = $postManager->getAdminPosts($_SESSION['user']);
             }
-            
             $commentManager = new CommentManager();
             $comments = $commentManager->getCommentsList();
             echo $twig->render(
@@ -100,29 +98,29 @@ class Backend
         }
     }
 
-    public function edit($twig)
-    {
-        // 2 options : no data from the form or the data is present
-        if (isset($_POST['modif'])) {
-            $postManager = new PostManager();
-            $edit = $postManager->editPost($_GET['id'], $_POST['modif']);
-            header("Location:index.php?action=post&id=".$_GET['post_id']);
-        } else {
-            require('../src/blog/view/frontend/editView.php');
-        }
-    }
-
     public function editPost($twig)
     {
         if (isset($_GET['id'])) {
             $postManager = new PostManager();
-            $post = $postManager->getPost($_GET['id']);
-            echo $twig->render('@admin/adminEditPostView.html.twig', [
-                'post' => $post
-            ]);
+            if ($_SESSION['user_role'] === 'contributor') {
+                $author = $postManager->getPostsAuthor($_GET['id']);
+                if ($_SESSION['user'] !== $author['author']) {
+                    echo $twig->render('@admin/adminEditPostView.html.twig', []);
+                } else {
+                    $post = $postManager->getPost($_GET['id']);
+                    echo $twig->render('@admin/adminEditPostView.html.twig', [
+                        'post' => $post
+                    ]);
+                }
+            } else {
+                $post = $postManager->getPost($_GET['id']);
+                echo $twig->render('@admin/adminEditPostView.html.twig', [
+                    'post' => $post
+                ]);
+            }
+            
         } else {
-            echo $twig->render('@admin/adminEditPostView.html.twig', [
-                
+            echo $twig->render('@admin/adminEditPostView.html.twig', [ 
             ]);
         }
     }

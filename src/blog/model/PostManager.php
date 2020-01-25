@@ -189,6 +189,19 @@ class PostManager extends Manager
         return;
     }
 
+    public function getPostsAuthor($postId) {
+        $db = $this->dbConnect();
+        $req = $db->prepare(
+            'SELECT author 
+            FROM posts
+            WHERE   id = :id'
+        );
+        $req->bindValue(':id', $postId, PDO::PARAM_INT);
+        $req->execute();
+        $author = $req->fetch();
+        return $author;
+    }
+
     public function updatePulicationPost($postid)
     {
         $db = $this->dbConnect();
