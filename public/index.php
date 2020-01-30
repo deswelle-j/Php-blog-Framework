@@ -16,6 +16,12 @@ $twig->addExtension(new \Twig\Extension\DebugExtension());
 $frontend =  new Frontend();
 $backend =  new Backend();
 
+if (!isset($_SESSION['token'])) {
+    $_SESSION['token'] = bin2hex(openssl_random_pseudo_bytes(6));
+ }
+
+var_dump($_SESSION);
+
 try {
     if (isset($_GET['action'])) {
         if ($_GET['action'] == 'listPosts') {
@@ -61,14 +67,15 @@ try {
             }
         }
         if ($_GET['action'] == 'delete-post') {
-            if (isset($_GET['id']) && $_GET['id'] >=0) {
+            if (isset($_GET['id'], $_GET['token']) && $_GET['id'] >=0 && $_GET['token'] == $_SESSION['token']) {
                 $backend->deletePost($twig, $_GET['id']);
             } else {
-                throw new Exception('Erreur : identifiant de commentaire ou identifiant de billet non envoyé');
+                throw new Exception('Erreur : identifiant identifiant de billet ou token non envoyé');
             }
         }
         if ($_GET['action'] == 'authentification') {
             if (isset($_SESSION['user']) && $_SESSION['user_role']) {
+
                 $backend->authentification($twig, $_SESSION['user_role']);
             } elseif (isset($_POST['inputEmail'], $_POST['inputPassword'])) {
                 $backend->userConnection($twig, $_POST['inputEmail'], $_POST['inputPassword']);

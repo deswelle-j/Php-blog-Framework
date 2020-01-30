@@ -25,7 +25,8 @@ class Backend
                 '@admin/administrationView.html.twig',
                 [
                     'posts' => $posts,
-                    'comments' => $comments
+                    'comments' => $comments,
+                    'token' => $_SESSION['token']
                 ]
             );
         } else {
@@ -53,6 +54,7 @@ class Backend
                     $_SESSION['user_fullname'] = $user[0]['firstname'] . ' ' . $user[0]['lastname'];
                     $_SESSION['user_role'] = $user[0]['role'];
                     $_SESSION['username'] = $user[0]['username'];
+                    unset($_SESSION['token']);
                     $this->authentification($twig, $_SESSION['user_role']);
                 } else {
                     throw new Exception('Utilisateur non trouvé ou mot de passe incorrect');
