@@ -40,15 +40,15 @@ try {
             }
         }
         if ($_GET['action'] == 'edit-post') {
-                $backend->editPost($twig);
+                $backend->editPost($twig, $_GET['id']);
         }
         if ($_GET['action'] == 'save-post') {
-            if (isset( 
+            if (isset(
                 $_POST['inputTitle'],
                 $_POST['inputKicker'],
                 $_POST['inputContent']) 
                 ) {
-                $backend->savePost($twig, $_POST['inputTitle'], $_POST['inputKicker'], $_POST['inputContent']);
+                $backend->savePost($twig, $_POST['inputTitle'], $_POST['inputKicker'], $_POST['inputContent'], $_GET['id']);
             } else {
                 throw new Exception('Erreur : champs de billet ou identifiant de billet non envoyé');
             }

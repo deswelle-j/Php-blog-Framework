@@ -98,27 +98,22 @@ class Backend
         }
     }
 
-    public function editPost($twig)
+    public function editPost($twig, $postid = false)
     {
-        if (isset($_GET['id'])) {
+        if ($postid) {
             $postManager = new PostManager();
             if ($_SESSION['user_role'] === 'contributor') {
-                $author = $postManager->getPostsAuthor($_GET['id']);
+                $author = $postManager->getPostsAuthor($postid);
                 if ($_SESSION['user'] !== $author['author']) {
                     echo $twig->render('@admin/adminEditPostView.html.twig', []);
-                } else {
-                    $post = $postManager->getPost($_GET['id']);
-                    echo $twig->render('@admin/adminEditPostView.html.twig', [
-                        'post' => $post
-                    ]);
+                    return;
                 }
             } else {
-                $post = $postManager->getPost($_GET['id']);
+                $post = $postManager->getPost($postid);
                 echo $twig->render('@admin/adminEditPostView.html.twig', [
                     'post' => $post
                 ]);
-            }
-            
+            }    
         } else {
             echo $twig->render('@admin/adminEditPostView.html.twig', [ 
             ]);
@@ -129,16 +124,16 @@ class Backend
     {
         if (isset($postid)) {
             $postManager = new PostManager();
-            $post = $postManager->updatePulicationPost($_GET['id']);
+            $post = $postManager->updatePulicationPost($postid);
             header("Location: index.php?action=authentification");
         }
     }
 
-    public function savePost($twig, $title, $kicker, $content)
+    public function savePost($twig, $title, $kicker, $content, $postid = false)
     {
         $postManager = new PostManager();
-        if (isset($_GET['id']) && $_GET['id'] >= 0) {
-            $post = $postManager->updatePost($_GET['id'], $title, $kicker, $content, $_SESSION['user']);
+        if ($postid) {
+            $post = $postManager->updatePost($postid, $title, $kicker, $content, $_SESSION['user']);
         } else {
             $post = $postManager->insertPost( $title, $kicker, $content, $_SESSION['user']);
         }
