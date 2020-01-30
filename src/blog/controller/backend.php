@@ -107,17 +107,21 @@ class Backend
             if ($_SESSION['user_role'] === 'contributor') {
                 $author = $postManager->getPostsAuthor($postid);
                 if ($_SESSION['user'] !== $author['author']) {
-                    echo $twig->render('@admin/adminEditPostView.html.twig', []);
+                    echo $twig->render('@admin/adminEditPostView.html.twig', [
+                        'token' => $_SESSION['token']
+                    ]);
                     return;
                 }
             } else {
                 $post = $postManager->getPost($postid);
                 echo $twig->render('@admin/adminEditPostView.html.twig', [
-                    'post' => $post
+                    'post' => $post,
+                    'token' => $_SESSION['token']
                 ]);
             }    
         } else {
-            echo $twig->render('@admin/adminEditPostView.html.twig', [ 
+            echo $twig->render('@admin/adminEditPostView.html.twig', [
+                'token' => $_SESSION['token']
             ]);
         }
     }

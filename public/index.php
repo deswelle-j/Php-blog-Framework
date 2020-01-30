@@ -46,13 +46,18 @@ try {
             }
         }
         if ($_GET['action'] == 'edit-post') {
+            if (isset($_GET['id'], $_GET['token']) && $_GET['id'] >=0 && $_GET['token'] == $_SESSION['token']) {
                 $backend->editPost($twig, $_GET['id']);
+            } else {
+                throw new Exception('Erreur : identifiant identifiant de billet ou token non envoyé');
+            } 
         }
         if ($_GET['action'] == 'save-post') {
             if (isset(
                 $_POST['inputTitle'],
                 $_POST['inputKicker'],
-                $_POST['inputContent']) 
+                $_POST['inputContent'],
+                $_POST['token']) && $_POST['token'] == $_SESSION['token']
                 ) {
                 $backend->savePost($twig, $_POST['inputTitle'], $_POST['inputKicker'], $_POST['inputContent'], $_GET['id']);
             } else {
@@ -60,11 +65,11 @@ try {
             }
         }
         if ($_GET['action'] == 'publish-post') {
-            if (isset($_GET['id']) && $_GET['id'] >=0) {
+            if (isset($_GET['id'], $_GET['token']) && $_GET['id'] >=0 && $_GET['token'] == $_SESSION['token']) {
                 $backend->publishPost($twig, $_GET['id']);
             } else {
-                throw new Exception('Erreur : champs de billet ou identifiant de billet non envoyé');
-            }
+                throw new Exception('Erreur : identifiant identifiant de billet ou token non envoyé');
+            } 
         }
         if ($_GET['action'] == 'delete-post') {
             if (isset($_GET['id'], $_GET['token']) && $_GET['id'] >=0 && $_GET['token'] == $_SESSION['token']) {
