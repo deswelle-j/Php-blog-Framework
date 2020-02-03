@@ -128,21 +128,106 @@ class PostManager extends Manager
     {
         $db = $this->dbConnect();
         $req = $db->prepare(
-            'SELECT id,
-            title,
-            content,
-            DATE_FORMAT(creation_date, \'%d/%m/%Y à %Hh%imin%ss\') AS creation_date_fr 
+            'SELECT posts.id, title, content, kicker, username, published, 
+            DATE_FORMAT(creation_date, \'%d/%m/%Y à %Hh%imin%ss\') AS creation_date_fr,
+            DATE_FORMAT(modification_date, \'%d/%m/%Y à %Hh%imin%ss\') AS modification_date_fr 
             FROM posts 
-            WHERE id = ?'
+            LEFT JOIN users ON posts.author = users.id
+            WHERE   posts.id = :id'
         );
-        $req->execute(array($postId));
+        $req->bindValue(':id', $postId, PDO::PARAM_INT);
+        $req->execute();
         $post = $req->fetch();
         return new Post(
             $post['id'],
             $post['title'],
+            $post['kicker'],
+            $post['username'],
             $post['content'],
-            $post['creation_date_fr']
+            $post['creation_date_fr'],
+            $post['modification_date_fr'],
+            $post['published']
         );
+    }
+
+    public function updatePost($postid, $title, $kicker, $content, $author)
+    {
+
+        $db = $this->dbConnect();
+        $req = $db->prepare(
+            'UPDATE posts SET title = :title,
+             kicker = :kicker, 
+             author = :author, 
+             content = :content, 
+             modification_date = NOW(), 
+             published = 0 
+             WHERE id = :id
+            '
+        );
+        $req->bindValue(':id', intval($postid), PDO::PARAM_INT);
+        $req->bindValue(':title', $title, PDO::PARAM_STR);
+        $req->bindValue(':kicker', $kicker, PDO::PARAM_STR);
+        $req->bindValue(':author', intval($author), PDO::PARAM_INT);
+        $req->bindValue(':content', $content, PDO::PARAM_STR);
+        $req->execute();
+        return;
+    }
+
+    public function insertPost($title, $kicker, $content, $author)
+    {
+        $db = $this->dbConnect();
+        $req = $db->prepare(
+            'INSERT INTO posts (title, kicker, content, author, creation_date, modification_date, published) 
+            VALUES ( :title, :kicker, :content, :author, NOW(), NOW(), 0)'
+        );
+        $req->bindValue(':title', $title, PDO::PARAM_STR);
+        $req->bindValue(':kicker', $kicker, PDO::PARAM_STR);
+        $req->bindValue(':author', intval($author), PDO::PARAM_INT);
+        $req->bindValue(':content', $content, PDO::PARAM_STR);
+        $req->execute();
+        $req->closeCursor();
+        return;
+    }
+
+    public function getPostsAuthor($postId) {
+        $db = $this->dbConnect();
+        $req = $db->prepare(
+            'SELECT author 
+            FROM posts
+            WHERE   id = :id'
+        );
+        $req->bindValue(':id', $postId, PDO::PARAM_INT);
+        $req->execute();
+        $author = $req->fetch();
+        return $author;
+    }
+
+    public function updatePulicationPost($postid)
+    {
+        $db = $this->dbConnect();
+        $req = $db->prepare(
+            'SELECT id, published
+            FROM posts
+            WHERE id = :id'
+        );
+        $req->bindValue(':id', $postid, PDO::PARAM_INT);
+        $req->execute();
+        $post = $req->fetch();
+        $req->closeCursor();
+        if ($post['published'] === '1' ) {
+            $publication = 0;
+        } else {
+            $publication = 1;
+        }
+        $req = $db->prepare(
+            'UPDATE posts
+            SET published = :published 
+            WHERE id = :id'
+        );
+        $req->bindValue(':id', $postid, PDO::PARAM_INT);
+        $req->bindValue(':published', $publication, PDO::PARAM_INT);
+        $req->execute();
+        return;
     }
 
     public function removePost($postid) {

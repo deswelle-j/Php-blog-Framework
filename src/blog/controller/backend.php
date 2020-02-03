@@ -19,14 +19,14 @@ class Backend
             } else {
                 $posts = $postManager->getAdminPosts($_SESSION['user']);
             }
-            
             $commentManager = new CommentManager();
             $comments = $commentManager->getCommentsList();
             echo $twig->render(
                 '@admin/administrationView.html.twig',
                 [
                     'posts' => $posts,
-                    'comments' => $comments
+                    'comments' => $comments,
+                    'token' => $_SESSION['token']
                 ]
             );
         } else {
@@ -54,6 +54,7 @@ class Backend
                     $_SESSION['user_fullname'] = $user[0]['firstname'] . ' ' . $user[0]['lastname'];
                     $_SESSION['user_role'] = $user[0]['role'];
                     $_SESSION['username'] = $user[0]['username'];
+                    unset($_SESSION['token']);
                     $this->authentification($twig, $_SESSION['user_role']);
                 } else {
                     throw new Exception('Utilisateur non trouvé ou mot de passe incorrect');
@@ -99,23 +100,57 @@ class Backend
         }
     }
 
-    public function edit($twig)
+    public function editPost($twig, $postid = false)
     {
-        // 2 options : no data from the form or the data is present
-        if (isset($_POST['modif'])) {
-            $commentManager = new CommentManager();
-            $edit = $commentManager->editComment($_GET['id'], $_POST['modif']);
-            header("Location:index.php?action=post&id=".$_GET['post_id']);
+        if ($postid) {
+            $postManager = new PostManager();
+            if ($_SESSION['user_role'] === 'contributor') {
+                $author = $postManager->getPostsAuthor($postid);
+                if ($_SESSION['user'] !== $author['author']) {
+                    echo $twig->render('@admin/adminEditPostView.html.twig', [
+                        'token' => $_SESSION['token']
+                    ]);
+                    return;
+                }
+            } else {
+                $post = $postManager->getPost($postid);
+                echo $twig->render('@admin/adminEditPostView.html.twig', [
+                    'post' => $post,
+                    'token' => $_SESSION['token']
+                ]);
+            }    
         } else {
-            require('../src/blog/view/frontend/editView.php');
+            echo $twig->render('@admin/adminEditPostView.html.twig', [
+                'token' => $_SESSION['token']
+            ]);
         }
     }
+
+    public function publishPost($twig, $postid)
+    {
+        if (isset($postid)) {
+            $postManager = new PostManager();
+            $post = $postManager->updatePulicationPost($postid);
+            header("Location: index.php?action=authentification");
+        }
+    }
+
+    public function savePost($twig, $title, $kicker, $content, $postid = false)
+    {
+        $postManager = new PostManager();
+        if ($postid) {
+            $post = $postManager->updatePost($postid, $title, $kicker, $content, $_SESSION['user']);
+        } else {
+            $post = $postManager->insertPost( $title, $kicker, $content, $_SESSION['user']);
+        }
+        header('Location: index.php?action=authentification');
+    }
+
     public function deletePost($twig, $postid) {
-        var_dump($postid);
         if (isset($postid)) {
             $postManager = new PostManager();
             $postManager->removePost($postid);
-            header('Location: Location: index.php?action=authentification');
+            header('Location: index.php?action=authentification');
         }
     }
 }

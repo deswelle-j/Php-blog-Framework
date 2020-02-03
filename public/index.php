@@ -16,6 +16,12 @@ $twig->addExtension(new \Twig\Extension\DebugExtension());
 $frontend =  new Frontend();
 $backend =  new Backend();
 
+if (!isset($_SESSION['token'])) {
+    $_SESSION['token'] = bin2hex(openssl_random_pseudo_bytes(6));
+ }
+
+var_dump($_SESSION);
+
 try {
     if (isset($_GET['action'])) {
         if ($_GET['action'] == 'listPosts') {
@@ -40,21 +46,41 @@ try {
             }
         }
         if ($_GET['action'] == 'edit-post') {
-            if (isset($_GET['id']) && $_GET['id'] >=0 && isset($_GET['post_id']) && $_GET['post_id'] >=0) {
-                $backend->editPost();
+            if (isset($_GET['id'], $_GET['token']) && $_GET['id'] >=0 && $_GET['token'] == $_SESSION['token']) {
+                $backend->editPost($twig, $_GET['id']);
             } else {
-                throw new Exception('Erreur : identifiant de commentaire ou identifiant de billet non envoyé');
+                throw new Exception('Erreur : identifiant identifiant de billet ou token non envoyé');
+            } 
+        }
+        if ($_GET['action'] == 'save-post') {
+            if (isset(
+                $_POST['inputTitle'],
+                $_POST['inputKicker'],
+                $_POST['inputContent'],
+                $_POST['token']) && $_POST['token'] == $_SESSION['token']
+                ) {
+                $backend->savePost($twig, $_POST['inputTitle'], $_POST['inputKicker'], $_POST['inputContent'], $_GET['id']);
+            } else {
+                throw new Exception('Erreur : champs de billet ou identifiant de billet non envoyé');
             }
         }
+        if ($_GET['action'] == 'publish-post') {
+            if (isset($_GET['id'], $_GET['token']) && $_GET['id'] >=0 && $_GET['token'] == $_SESSION['token']) {
+                $backend->publishPost($twig, $_GET['id']);
+            } else {
+                throw new Exception('Erreur : identifiant identifiant de billet ou token non envoyé');
+            } 
+        }
         if ($_GET['action'] == 'delete-post') {
-            if (isset($_GET['id']) && $_GET['id'] >=0) {
+            if (isset($_GET['id'], $_GET['token']) && $_GET['id'] >=0 && $_GET['token'] == $_SESSION['token']) {
                 $backend->deletePost($twig, $_GET['id']);
             } else {
-                throw new Exception('Erreur : identifiant de commentaire ou identifiant de billet non envoyé');
+                throw new Exception('Erreur : identifiant identifiant de billet ou token non envoyé');
             }
         }
         if ($_GET['action'] == 'authentification') {
             if (isset($_SESSION['user']) && $_SESSION['user_role']) {
+
                 $backend->authentification($twig, $_SESSION['user_role']);
             } elseif (isset($_POST['inputEmail'], $_POST['inputPassword'])) {
                 $backend->userConnection($twig, $_POST['inputEmail'], $_POST['inputPassword']);
