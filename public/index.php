@@ -46,10 +46,10 @@ try {
             }
         }
         if ($_GET['action'] == 'edit-post') {
-            if (isset($_GET['id'], $_GET['token']) && $_GET['id'] >=0 && $_GET['token'] == $_SESSION['token']) {
-                $backend->editPost($twig, $_GET['id']);
+            if (isset($_GET['token']) && $_GET['token'] == $_SESSION['token']) {
+                $backend->editPost($twig);
             } else {
-                throw new Exception('Erreur : identifiant identifiant de billet ou token non envoyé');
+                throw new Exception('Erreur : identifiant de token non envoyé');
             } 
         }
         if ($_GET['action'] == 'save-post') {
