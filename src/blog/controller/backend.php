@@ -135,6 +135,15 @@ class Backend
         }
     }
 
+    public function publishComment($twig, $commentId)
+    {
+        if (isset($commentId)) {
+            $commentManager = new CommentManager();
+            $comment = $commentManager->updatePulicationComment($commentId);
+            header("Location: index.php?action=authentification");
+        }
+    }
+
     public function savePost($twig, $title, $kicker, $content, $postid = false)
     {
         $postManager = new PostManager();

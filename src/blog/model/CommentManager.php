@@ -1,6 +1,7 @@
 <?php
 
 namespace Framework\Blog\Model;
+use \PDO;
 
 class CommentManager extends Manager
 {
@@ -8,7 +9,7 @@ class CommentManager extends Manager
     {
         $db = $this->dbConnect();
         $comments = $db->prepare(
-            'SELECT id, post_id,author, comment, publish,
+            'SELECT id, post_id,author, comment, published,
             DATE_FORMAT(comment_date, \'%d/%m/%Y à %Hh%imin%ss\') AS comment_date_fr 
             FROM comments 
             WHERE post_id = ? 
@@ -23,7 +24,7 @@ class CommentManager extends Manager
                 $comment['post_id'],
                 $comment['author'],
                 $comment['comment'],
-                $comment['publish'],
+                $comment['published'],
                 $comment['comment_date_fr']
             );
             array_push($commentAll, $comment);
@@ -36,9 +37,10 @@ class CommentManager extends Manager
     {
         $db = $this->dbConnect();
         $req = $db->query(
-            'SELECT id, post_id, author, comment, publish,
+            'SELECT comments.id, post_id, username as author, comment, published,
             DATE_FORMAT(comment_date, \'%d/%m/%Y à %Hh%imin%ss\') AS comment_date_fr 
             FROM comments 
+            LEFT JOIN users ON comments.author = users.id
             ORDER BY comment_date DESC'
         );
         $req->execute();
@@ -50,7 +52,7 @@ class CommentManager extends Manager
                 $comment['post_id'],
                 $comment['author'],
                 $comment['comment'],
-                $comment['publish'],
+                $comment['published'],
                 $comment['comment_date_fr']
             );
             array_push($commentAll, $comment);
@@ -73,4 +75,33 @@ class CommentManager extends Manager
         $req = $db->prepare('UPDATE comments SET comment = :newComment , comment_date = NOW() WHERE id = :id ');
         $req -> execute(array('id' => $commentId , 'newComment' => $newComment ));
     }
+
+    public function updatePulicationComment($commentId)
+    {
+        $db = $this->dbConnect();
+        $req = $db->prepare(
+            'SELECT id, published
+            FROM comments
+            WHERE id = :id'
+        );
+        $req->bindValue(':id', $commentId, PDO::PARAM_INT);
+        $req->execute();
+        $comment = $req->fetch();
+        $req->closeCursor();
+        if ($comment['published'] === '1' ) {
+            $publication = 0;
+        } else {
+            $publication = 1;
+        }
+        $req = $db->prepare(
+            'UPDATE comments
+            SET published = :published 
+            WHERE id = :id'
+        );
+        $req->bindValue(':id', $commentId, PDO::PARAM_INT);
+        $req->bindValue(':published', $publication, PDO::PARAM_INT);
+        $req->execute();
+        return;
+    }
+
 }
