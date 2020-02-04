@@ -55,12 +55,17 @@ class Backend
                     $_SESSION['user_role'] = $user[0]['role'];
                     $_SESSION['username'] = $user[0]['username'];
                     unset($_SESSION['token']);
+                    $_SESSION['token'] = bin2hex(openssl_random_pseudo_bytes(6));
                     $this->authentification($twig, $_SESSION['user_role']);
                 } else {
-                    throw new Exception('Utilisateur non trouvé ou mot de passe incorrect');
+                    echo $twig->render('connectionView.html.twig',[
+                        'error' => 'Utilisateur non trouvé ou mot de passe incorrect'
+                    ]); 
                 }
             } else {
-                throw new Exception('Information de connexion incorrectes');
+                echo $twig->render('connectionView.html.twig',[
+                    'error' => 'Information de connexion incorrectes'
+                ]); 
             }
         } else {
             echo $twig->render('connectionView.html.twig');

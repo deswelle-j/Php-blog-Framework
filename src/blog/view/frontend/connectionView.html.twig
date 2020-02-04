@@ -18,6 +18,11 @@
         <form method="post" class="form-signin">
             <input type="hidden" name="form-signin" value="1"/>
             <h1 class="h3 mb-3 font-weight-normal">Connection</h1>
+            {% if error %}
+                <div class="form-label-group text-danger">
+                    {{error}}
+                </div>
+            {% endif %}
             <div class="form-label-group">
                 <input type="email" id="inputEmail" name="inputEmail" 
                     class="form-control" placeholder="Votre email" required autofocus value="">
