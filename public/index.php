@@ -20,8 +20,6 @@ if (!isset($_SESSION['token'])) {
     $_SESSION['token'] = bin2hex(openssl_random_pseudo_bytes(6));
  }
 
-var_dump($_SESSION);
-
 try {
     if (isset($_GET['action'])) {
         if ($_GET['action'] == 'listPosts') {
@@ -46,10 +44,10 @@ try {
             }
         }
         if ($_GET['action'] == 'edit-post') {
-            if (isset($_GET['id'], $_GET['token']) && $_GET['id'] >=0 && $_GET['token'] == $_SESSION['token']) {
-                $backend->editPost($twig, $_GET['id']);
+            if (isset($_GET['token']) && $_GET['token'] == $_SESSION['token']) {
+                $backend->editPost($twig);
             } else {
-                throw new Exception('Erreur : identifiant identifiant de billet ou token non envoyé');
+                throw new Exception('Erreur : identifiant de token non envoyé');
             } 
         }
         if ($_GET['action'] == 'save-post') {
@@ -77,6 +75,13 @@ try {
             } else {
                 throw new Exception('Erreur : identifiant identifiant de billet ou token non envoyé');
             }
+        }
+        if ($_GET['action'] == 'publish-comment') {
+            if (isset($_GET['id'], $_GET['token']) && $_GET['id'] >=0 && $_GET['token'] == $_SESSION['token']) {
+                $backend->publishComment($twig, $_GET['id']);
+            } else {
+                throw new Exception('Erreur : identifiant identifiant de billet ou token non envoyé');
+            } 
         }
         if ($_GET['action'] == 'authentification') {
             if (isset($_SESSION['user']) && $_SESSION['user_role']) {
