@@ -35,21 +35,22 @@
             <li class="active"><a href="index.php" >Home</a></li>
             <li><a href="index.php?action=listPosts" >Blog</a></li>
             <li><a href="index.php#contact-section" >Contact</a></li>
-            <li><a href="index.php?action=authentification" >Admin</a></li>
+            {% if not isConnected() %}
+            <li><a href="index.php?action=authentification" >Connexion</a></li>
+            {% endif %}
+            {% if isConnected() %}
+            <li><a href="index.php?action=authentification" >Bonjour {{ session }}</a></li>
+            <li><button type="button" class="btn btn-primary my-2 my-lg-0" onclick="location.href='index.php?action=logOut';">Déconnexion</button></li>
+            {% endif %}
           </ul>
           <ul class="probootstrap-header-social hidden-xs">
             <li><a href="https://www.linkedin.com/in/johan-deswelle"><i class="icon-linkedin"></i></a></li>
-            {# <li><a href="#"><i class="icon-facebook2"></i></a></li>
-            <li><a href="#"><i class="icon-instagram2"></i></a></li> #}
           </ul>
           <div class="extra-text visible-xs">
             <a href="#" class="probootstrap-burger-menu"><i>Menu</i></a>
             <h5>Social</h5>
             <ul class="social-buttons">
               <li><a href="https://www.linkedin.com/in/johan-deswelle"><i class="icon-linkedin"></i></a></li>
-              {# <li><a href="#"><i class="icon-facebook2"></i></a></li>
-              <li><a href="#"><i class="icon-instagram2"></i></a></li> #}
-              
             </ul>
           </div>
         </nav>
