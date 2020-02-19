@@ -55,6 +55,7 @@
 					<p>{{comment.comment}}</p>
 				{% endfor %}
 			</div>
+			{% if isConnected() %}
 			<form action="index.php?action=addComment&amp;id={{post.id}}" method="post">
     			<div class="form-group">
         			<label for="author">Auteur</label><br />
@@ -68,6 +69,7 @@
         			<input type="submit" />
     			</div>
 			</form>
+			{% endif %}
 		</div>
 	</div>
 </section>

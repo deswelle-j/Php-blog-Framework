@@ -1,45 +1,110 @@
 <!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Formulaire</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-    <link href="https://fonts.googleapis.com/css?family=Titillium+Web:400,700" rel="stylesheet">
-    <link href="css/styles.css" rel="stylesheet">
-</head>
-<body>
 
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>{% block title %}{% endblock %} &mdash; Free Bootstrap Theme, Free Responsive Bootstrap Website Template</title>
+        <meta name="description" content="Free Bootstrap Theme by uicookies.com">
+        <meta name="keywords" content="free website templates, free bootstrap themes, free template, free bootstrap, free website template">
 
-    <div class="text-center">
-        <a href="index.php?action=signup">Inscription</a>
-        <a href="index.php">Accueil</a>
-        <form method="post" class="form-signin">
-            <input type="hidden" name="form-signin" value="1"/>
-            <h1 class="h3 mb-3 font-weight-normal">Connection</h1>
-            <div class="form-label-group">
-                <input type="email" id="inputEmail" name="inputEmail" 
-                    class="form-control" placeholder="Votre email" required autofocus value="">
-                <label for="inputEmail">Email address</label>
+        <link href="https://fonts.googleapis.com/css?family=Playfair+Display:400,700,900|Rubik:300,400,500" rel="stylesheet">
+        <link rel="stylesheet" href="css/styles-merged.css">
+        <link rel="stylesheet" href="css/style.min.css">
+        <link rel="stylesheet" href="css/custom.css">
+        <script src="https://kit.fontawesome.com/7d777fd7d3.js" crossorigin="anonymous"></script>
+        <!--[if lt IE 9]>
+            <script src="js/vendor/html5shiv.min.js"></script>
+            <script src="js/vendor/respond.min.js"></script>
+        <![endif]-->
+    </head>
+
+    <body>
+        <header role="banner" class="probootstrap-header">
+            <div class="container-fluid">
+                <a href="index.html" class="probootstrap-logo"><img style="width: 80px" src="img/logo-jd.png" alt="">
+                <span  style="color: #17A2B8;">Johan Deswelle</span><span>.</span>
+                </a>
+                
+                <a href="#" class="probootstrap-burger-menu visible-xs" ><i>Menu</i></a>
+                <div class="mobile-menu-overlay"></div>
+
+                <nav role="navigation" class="probootstrap-nav hidden-xs">
+                <ul class="probootstrap-main-nav">
+                    <li><a href="index.php" >Home</a></li>
+                    <li><a href="index.php?action=listPosts" >Blog</a></li>
+                    <li><a href="index.php#contact-section" >Contact</a></li>
+                    {% if not isConnected() %}
+                    <li><a href="index.php?action=authentification" >Connexion</a></li>
+                    <li><a href="index.php?action=signup">Inscription</a></li>
+                    {% endif %}
+                    {% if isConnected() %}
+                    <li><a href="index.php?action=authentification" >Bonjour {{ session }}</a></li>
+                    <li><button type="button" class="btn btn-primary my-2 my-lg-0" onclick="location.href='index.php?action=logOut';">Déconnexion</button></li>
+                    {% endif %}
+                </ul>
+                <ul class="probootstrap-header-social hidden-xs">
+                    <li><a href="https://www.linkedin.com/in/johan-deswelle"><i class="icon-linkedin"></i></a></li>
+                </ul>
+                <div class="extra-text visible-xs">
+                    <a href="#" class="probootstrap-burger-menu"><i>Menu</i></a>
+                    <h5>Social</h5>
+                    <ul class="social-buttons">
+                    <li><a href="https://www.linkedin.com/in/johan-deswelle"><i class="icon-linkedin"></i></a></li>
+                    </ul>
+                </div>
+                </nav>
             </div>
-
-            <div class="form-label-group">
-                <input type="password" id="inputPassword" name="inputPassword" 
-                    class="form-control" placeholder="Votre mot de passe" required>
-                <label for="inputPassword">Password</label>
+        </header>
+        <!-- START: section -->
+        <section class="probootstrap-intro" style="background-image: url(img/wooden.jpg);" data-stellar-background-ratio="0.5">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-7 probootstrap-intro-text">
+                    <h1 class="probootstrap-animate"  data-animate-effect="fadeIn">La création de votre site web
+                        dans les règles de l'art.</h1>
+                    </div>
+                </div>
             </div>
+            <span class="probootstrap-animate"><a class="probootstrap-scroll-down js-next" href="#next-section">Scroll down <i class="icon-chevron-down"></i></a></span>
+        </section>
+        <!-- END: section -->
 
-            <button type="submit" class="btn btn-lg btn-primary btn-block">Valider</button>
-        </form>
-    </div>
-    <script src="js/scripts.min.js"></script>
-  <script src="js/main.min.js"></script>
-  <script src="js/custom.js"></script>
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-</body>
+        <section id="next-section" class="probootstrap-section">
+            <div class="container">
+                <div class="text-center">
+                    <form method="post" class="form-signin">
+                        <input type="hidden" name="form-signin" value="1"/>
+                        <h1 class="h3 mb-3 font-weight-normal">Connection</h1>
+                        {% if error %}
+                            <div class="form-label-group text-danger">
+                                {{error}}
+                            </div>
+                        {% endif %}
+                        <div class="form-label-group">
+                            <input type="email" id="inputEmail" name="inputEmail" 
+                                class="form-control" placeholder="Votre email" required autofocus value="">
+                            <label for="inputEmail">Email address</label>
+                        </div>
+
+                        <div class="form-label-group">
+                            <input type="password" id="inputPassword" name="inputPassword" 
+                                class="form-control" placeholder="Votre mot de passe" required>
+                            <label for="inputPassword">Password</label>
+                        </div>
+
+                        <button type="submit" class="btn btn-lg btn-primary btn-block">Valider</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+        <script src="js/scripts.min.js"></script>
+        <script src="js/main.min.js"></script>
+        <script src="js/custom.js"></script>
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    </body>
 </html>
 
 

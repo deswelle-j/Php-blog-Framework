@@ -11,6 +11,17 @@ $loader->addPath('../src/blog/view/backend', 'admin');
 $twig = new \Twig\Environment($loader, [
     'debug' => true
 ]);
+
+$isConnected = new \Twig\TwigFunction('isConnected', function () {
+    if (isset($_SESSION['username'])){
+        return true;
+    }
+    return false;
+});
+$twig->addFunction($isConnected);
+if (isset($_SESSION['username'])) {
+    $twig->addGlobal('session', $_SESSION['username']);
+}
 $twig->addExtension(new \Twig\Extension\DebugExtension());
 
 $frontend =  new Frontend();
