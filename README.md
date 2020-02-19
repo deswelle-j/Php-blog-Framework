@@ -18,6 +18,17 @@ composer update
 To create the database your
 Run the script database.sql
 
+and create a env.php file in conf directory with 
+```bash
+define('HOST', ''); 
+define('USER', ''); 
+define('PASS', ''); 
+define('DB', ''); 
+define('TO_EMAIL', '');
+```
+
+and put your datebase and SMTP informations in each variable 
+
 The page can be then be accessed with the following URL:
 https://localhost/index.php
 
@@ -26,3 +37,8 @@ https://localhost/index.php
 After entering this command ```git clone https://github.com/deswelle-j/Php-blog-Framework.git ```, you should have a directory which 
 have an other directory named src, here you can develop without problems, each modification should be
 reflected into the site.
+
+## Code Quality ?
+
+code quality was checked by adding codeclimate to the project you can see the last analis 
+[here at codeclimate](https://codeclimate.com/github/deswelle-j/Php-blog-Framework/issues?category%5B%5D=complexity&category%5B%5D=style&status%5B%5D=&status%5B%5D=open&status%5B%5D=confirmed&engine_name%5B%5D=structure&engine_name%5B%5D=duplication&engine_name%5B%5D=phpcodesniffer&language_name%5B%5D=PHP)
