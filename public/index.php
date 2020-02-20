@@ -18,9 +18,25 @@ $isConnected = new \Twig\TwigFunction('isConnected', function () {
     }
     return false;
 });
+
 $twig->addFunction($isConnected);
+$isGranted= new \Twig\TwigFunction('isGranted', function () {
+    if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin' ){
+        return true;
+    }
+    return false;
+});
+$twig->addFunction($isGranted);
+$isDisplayComments= new \Twig\TwigFunction('isDisplayComments', function () {
+    if (isset($_SESSION['user_role']) && $_SESSION['user_role'] !== 'contributor' ){
+        return true;
+    }
+    return false;
+});
+$twig->addFunction($isDisplayComments);
 if (isset($_SESSION['username'])) {
     $twig->addGlobal('session', $_SESSION['username']);
+    $twig->addGlobal('user', $_SESSION['user']);
 }
 $twig->addExtension(new \Twig\Extension\DebugExtension());
 
@@ -112,6 +128,7 @@ try {
                 $_POST['inputEmail'],
                 $_POST['inputPassword'],
                 $_POST['inputFirstname'],
+                $_POST['inputUsername'],
                 $_POST['inputLastname']
             )) {
                     $frontend->userCreation(
@@ -119,6 +136,7 @@ try {
                         $_POST['inputEmail'],
                         $_POST['inputPassword'],
                         $_POST['inputFirstname'],
+                        $_POST['inputUsername'],
                         $_POST['inputLastname']
                     );
             } else {
@@ -136,6 +154,7 @@ try {
                 $_POST['inputPassword'],
                 $_POST['inputFirstname'],
                 $_POST['inputLastname'],
+                $_POST['inputUsername'],
                 $_POST['inputRole']
             )) {
                     $backend->superUserCreation(
@@ -144,6 +163,7 @@ try {
                         $_POST['inputPassword'],
                         $_POST['inputFirstname'],
                         $_POST['inputLastname'],
+                        $_POST['inputUsername'],
                         $_POST['inputRole']
                     );
             } else {

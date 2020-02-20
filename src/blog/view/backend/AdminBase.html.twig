@@ -23,9 +23,11 @@
             <li class="nav-item active">
               <a class="nav-link" href="index.php?action=authentification">Accueil <span class="sr-only">(current)</span></a>
             </li>
+            {% if isGranted() %}
             <li class="nav-item">
               <a class="nav-link" href="index.php?action=superuserlist">Gestion des membres</a>
             </li>
+            {% endif %}
           </ul>
           <button type="button" class="btn btn-primary my-2 my-lg-0" onclick="location.href='index.php?action=logOut';">Déconnexion</button>
         </div>
