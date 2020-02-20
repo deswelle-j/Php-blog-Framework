@@ -4,3 +4,9 @@ plugins:
     enabled: true
     config:
       standard: "PSR1,PSR2"
+## other configuration excluded from example...
+exclude_patterns:
+- "public/css"
+- "public/js"
+- "public/fonts"
+- "public/img"
