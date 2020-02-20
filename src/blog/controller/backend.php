@@ -108,7 +108,7 @@ class Backend
 
     public function editPost($twig, $postid = false)
     {
-        if ($postid) {
+        if ($postid !== false) {
             $postManager = new PostManager();
             if ($_SESSION['user_role'] === 'contributor') {
                 $author = $postManager->getPostsAuthor($postid);
