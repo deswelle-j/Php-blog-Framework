@@ -9,7 +9,7 @@ use Framework\Blog\Utils\Session;
 
 class Backend
 {
-    public function authentification($twig, $role)
+    public function listPost($twig, $role)
     {
         if ($role !== 'visitor') {
             $postManager = new PostManager();
@@ -56,7 +56,7 @@ class Backend
                     $_SESSION['username'] = $user[0]['username'];
                     unset($_SESSION['token']);
                     $_SESSION['token'] = bin2hex(openssl_random_pseudo_bytes(6));
-                    $this->authentification($twig, $_SESSION['user_role']);
+                    $this->listPost($twig, $_SESSION['user_role']);
                 } else {
                     echo $twig->render('connectionView.html.twig',[
                         'error' => 'Utilisateur non trouvé ou mot de passe incorrect'

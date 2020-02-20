@@ -97,7 +97,7 @@ try {
         if ($_GET['action'] == 'authentification') {
             if (isset($_SESSION['user']) && $_SESSION['user_role']) {
 
-                $backend->authentification($twig, $_SESSION['user_role']);
+                $backend->listPost($twig, $_SESSION['user_role']);
             } elseif (isset($_POST['inputEmail'], $_POST['inputPassword'])) {
                 $backend->userConnection($twig, $_POST['inputEmail'], $_POST['inputPassword']);
             } else {
