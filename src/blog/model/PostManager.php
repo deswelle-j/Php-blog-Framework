@@ -19,7 +19,7 @@ class PostManager extends Manager
             WHERE published = 1
             ORDER BY creation_date  
             DESC 
-            LIMIT 0, 4'
+            LIMIT 0, 3'
         );
         $req->execute();
         $postsReq = $req->fetchAll();
@@ -52,8 +52,7 @@ class PostManager extends Manager
             LEFT JOIN users ON posts.author = users.id
             WHERE published = 1
             ORDER BY creation_date 
-            DESC 
-            LIMIT 0, 5'
+            DESC'
         );
         $req->execute();
         $postsReq = $req->fetchAll();
@@ -86,8 +85,7 @@ class PostManager extends Manager
                 FROM posts 
                 LEFT JOIN users ON posts.author = users.id
                 ORDER BY creation_date 
-                DESC 
-                LIMIT 0, 5'
+                DESC'
             ); 
             $req->execute();
         } else {
@@ -99,8 +97,7 @@ class PostManager extends Manager
                 LEFT JOIN users ON posts.author = users.id
                 WHERE  users.id = :user 
                 ORDER BY creation_date_fr 
-                DESC 
-                LIMIT 0, 5'
+                DESC'
             );
             $req->bindValue(':user', $user, PDO::PARAM_INT);
             $req->execute();

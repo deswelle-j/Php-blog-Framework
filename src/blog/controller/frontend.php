@@ -69,10 +69,9 @@ class Frontend
     }
     public function sendContactMail($twig, $fname = false, $lname = false, $email = false, $subject = false, $message = false)
     {
-        var_dump($fname, $lname, $email, $subject, $message);
         if ($fname !== false && $lname !== false && $email !== false && $subject !== false && $message !== false) {
-            var_dump('on entre');
             $to_email = TO_EMAIL ;
+            $subject = $subject . ' From: '. $email; 
             mail($to_email, $subject, $message);
             header('Location: index.php');
         } else {
