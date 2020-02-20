@@ -51,7 +51,7 @@ class Post
     }
     public function modificationDate()
     {
-        return $this->modificationDate;
+        return $this->modification_date;
     }
     public function published()
     {
@@ -96,7 +96,7 @@ class Post
 
     public function setModificationDate($modification_date)
     {
-        $this->modificaiotn_date = $modification_date;
+        $this->modificationDate = $modification_date;
     }
 
     public function setPublished($published)
