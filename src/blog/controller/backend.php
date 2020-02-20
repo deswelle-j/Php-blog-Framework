@@ -84,18 +84,19 @@ class Backend
         }
     }
 
-    public function superUserCreation($twig, $email = false, $password = false, $firstname = false, $lastname = false, $role = false)
+    public function superUserCreation($twig, $email = false, $password = false, $firstname = false, $lastname = false, $username = false, $role = false)
     {
-        if ($email != false && $password != false && $firstname != false && $lastname != false && $role != false) {
+        if ($email != false && $password != false && $firstname != false && $lastname != false && $role != false && $username != false) {
             $login = trim($email);
             $password =trim($password);
             $firstname = trim($firstname);
             $lastname = trim($lastname);
+            $username = trim($username);
             if (filter_var($login, FILTER_VALIDATE_EMAIL) && !empty($password) && !empty($firstname) &&
                 !empty($lastname) && !empty($role)) {
                 $userManager = new UserManager();
                 $password = password_hash($password, PASSWORD_DEFAULT);
-                $user = $userManager->superUserCreation($login, $password, $firstname, $lastname, $role);
+                $user = $userManager->superUserCreation($login, $password, $firstname, $lastname, $username, $role);
                 header('Location: Location: index.php?action=authentification');
             } else {
                 throw new Exception('Information de connexion incorrectes');

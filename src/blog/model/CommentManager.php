@@ -9,10 +9,11 @@ class CommentManager extends Manager
     {
         $db = $this->dbConnect();
         $comments = $db->prepare(
-            'SELECT id, post_id,author, comment, published,
+            'SELECT comments.id, post_id, username, comment, published,
             DATE_FORMAT(comment_date, \'%d/%m/%Y à %Hh%imin%ss\') AS comment_date_fr 
             FROM comments 
-            WHERE post_id = ? 
+            LEFT JOIN users ON comments.author = users.id
+            WHERE post_id = ? AND published = 1
             ORDER BY comment_date DESC'
         );
         $comments->execute(array($postId));
@@ -22,7 +23,7 @@ class CommentManager extends Manager
             $comment  = new Comment(
                 $comment['id'],
                 $comment['post_id'],
-                $comment['author'],
+                $comment['username'],
                 $comment['comment'],
                 $comment['published'],
                 $comment['comment_date_fr']
@@ -69,12 +70,12 @@ class CommentManager extends Manager
         return $affectedLines;
     }
 
-    public function editComment($commentId, $newComment)
-    {
-        $db = $this->dbConnect();
-        $req = $db->prepare('UPDATE comments SET comment = :newComment , comment_date = NOW() WHERE id = :id ');
-        $req -> execute(array('id' => $commentId , 'newComment' => $newComment ));
-    }
+    // public function editComment($commentId, $newComment)
+    // {
+    //     $db = $this->dbConnect();
+    //     $req = $db->prepare('UPDATE comments SET comment = :newComment , comment_date = NOW() WHERE id = :id ');
+    //     $req -> execute(array('id' => $commentId , 'newComment' => $newComment ));
+    // }
 
     public function updatePulicationComment($commentId)
     {

@@ -46,10 +46,10 @@ class Frontend
         }
     }
 
-    public function userCreation($twig, $email = false, $password = false, $firstname = false, $lastname = false)
+    public function userCreation($twig, $email = false, $password = false, $firstname = false, $lastname = false, $username = false)
     {
         
-        if ($email != false && $password != false && $firstname != false && $lastname != false) {
+        if ($email != false && $password != false && $firstname != false && $lastname != false && $username != false) {
             $login = trim($email);
             $password =trim($password);
             $firstname = trim($firstname);
@@ -58,7 +58,7 @@ class Frontend
                 !empty($lastname)) {
                 $userManager = new UserManager();
                 $password = password_hash($password, PASSWORD_DEFAULT);
-                $user = $userManager->userCreation($login, $password, $firstname, $lastname);
+                $user = $userManager->userCreation($login, $password, $firstname, $lastname, $username);
                 header('Location: index.php');
             } else {
                 throw new Exception('Information de connexion incorrectes');
