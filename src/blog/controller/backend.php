@@ -90,8 +90,7 @@ class Backend
         $username = false,
         $role = false
     ) {
-        if (
-            $email != false
+        if ($email != false
             && $password != false
             && $firstname != false
             && $lastname != false
