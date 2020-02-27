@@ -2,13 +2,22 @@
 <html>
 	<head>
 		<title>{% block title %} {% endblock %}</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>Formulaire</title>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-        <link href="https://fonts.googleapis.com/css?family=Titillium+Web:400,700" rel="stylesheet">
-        <link href="css/styles.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Formulaire</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Titillium+Web:400,700" rel="stylesheet">
+    <link href="css/styles.css" rel="stylesheet">
+    <script src="../vendor/tinymce/tinymce/tinymce.min.js"></script>
+    <script type="text/javascript">
+      tinymce.init({
+        selector: 'textarea#inputContent',
+        branding: false,
+        contextmenu: "link table spellchecker"
+      });
+    </script>
+</head>
 	</head>
 	<body>
     <header>
