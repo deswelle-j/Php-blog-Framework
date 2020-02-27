@@ -68,17 +68,16 @@ class Frontend
         }
     }
     public function sendContactMail(
-        $twig, 
-        $fname = false, 
-        $lname = false, 
+        $twig,
+        $fname = false,
+        $lname = false,
         $email = false,
-        $subject = false, 
+        $subject = false,
         $message = false
-        )
-    {
+    ) {
         if ($fname !== false && $lname !== false && $email !== false && $subject !== false && $message !== false) {
             $to_email = TO_EMAIL ;
-            $subject = $subject . ' From: '. $email; 
+            $subject = $subject . ' From: '. $email;
             mail($to_email, $subject, $message);
             header('Location: index.php');
         } else {
