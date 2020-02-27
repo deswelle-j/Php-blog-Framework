@@ -1,6 +1,7 @@
 <?php
 
 namespace Framework\Blog\Model;
+
 use \PDO;
 
 class CommentManager extends Manager

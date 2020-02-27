@@ -58,14 +58,14 @@ class Backend
                     $_SESSION['token'] = bin2hex(openssl_random_pseudo_bytes(6));
                     $this->listPost($twig, $_SESSION['user_role']);
                 } else {
-                    echo $twig->render('connectionView.html.twig',[
+                    echo $twig->render('connectionView.html.twig', [
                         'error' => 'Utilisateur non trouvé ou mot de passe incorrect'
-                    ]); 
+                    ]);
                 }
             } else {
-                echo $twig->render('connectionView.html.twig',[
+                echo $twig->render('connectionView.html.twig', [
                     'error' => 'Information de connexion incorrectes'
-                ]); 
+                ]);
             }
         } else {
             echo $twig->render('connectionView.html.twig');
@@ -90,8 +90,14 @@ class Backend
         $username = false,
         $role = false
     ) {
-        if ($email != false && $password != false && $firstname != false && $lastname != false && 
-        $role != false && $username != false) {
+        if (
+            $email != false
+            && $password != false
+            && $firstname != false
+            && $lastname != false
+            && $role != false
+            && $username != false
+        ) {
             $login = trim($email);
             $password =trim($password);
             $firstname = trim($firstname);
@@ -129,7 +135,7 @@ class Backend
                     'post' => $post,
                     'token' => $_SESSION['token']
                 ]);
-            }    
+            }
         } else {
             echo $twig->render('@admin/adminEditPostView.html.twig', [
                 'token' => $_SESSION['token']
@@ -166,7 +172,7 @@ class Backend
         header('Location: index.php?action=authentification');
     }
 
-    public function deletePost($twig, $postid) 
+    public function deletePost($twig, $postid)
     {
         if (isset($postid)) {
             $postManager = new PostManager();

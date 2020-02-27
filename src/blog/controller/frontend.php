@@ -46,8 +46,14 @@ class Frontend
         }
     }
 
-    public function userCreation($twig, $email = false, $password = false, $firstname = false, $lastname = false, $username = false)
-    {
+    public function userCreation(
+        $twig,
+        $email = false,
+        $password = false,
+        $firstname = false,
+        $lastname = false,
+        $username = false
+    ) {
         
         if ($email != false && $password != false && $firstname != false && $lastname != false && $username != false) {
             $login = trim($email);

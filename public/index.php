@@ -13,7 +13,7 @@ $twig = new \Twig\Environment($loader, [
 ]);
 
 $isConnected = new \Twig\TwigFunction('isConnected', function () {
-    if (isset($_SESSION['username'])){
+    if (isset($_SESSION['username'])) {
         return true;
     }
     return false;
@@ -21,7 +21,7 @@ $isConnected = new \Twig\TwigFunction('isConnected', function () {
 
 $twig->addFunction($isConnected);
 $isGranted= new \Twig\TwigFunction('isGranted', function () {
-    if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin' ) {
+    if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin') {
         return true;
     }
     return false;
@@ -75,7 +75,7 @@ try {
                 $backend->editPost($twig, $_GET['id']);
             } else {
                 throw new Exception('Erreur : identifiant de token non envoyé');
-            } 
+            }
         }
         if ($_GET['action'] == 'save-post') {
             if (isset(
@@ -83,9 +83,14 @@ try {
                 $_POST['inputKicker'],
                 $_POST['inputContent'],
                 $_POST['token']
-                ) && $_POST['token'] == $_SESSION['token']
-                ) {
-                $backend->savePost($twig, $_POST['inputTitle'], $_POST['inputKicker'], $_POST['inputContent'], $_GET['id']);
+            ) && $_POST['token'] == $_SESSION['token']) {
+                $backend->savePost(
+                    $twig,
+                    $_POST['inputTitle'],
+                    $_POST['inputKicker'],
+                    $_POST['inputContent'],
+                    $_GET['id']
+                );
             } else {
                 throw new Exception('Erreur : champs de billet ou identifiant de billet non envoyé');
             }
@@ -95,7 +100,7 @@ try {
                 $backend->publishPost($twig, $_GET['id']);
             } else {
                 throw new Exception('Erreur : identifiant identifiant de billet ou token non envoyé');
-            } 
+            }
         }
         if ($_GET['action'] == 'delete-post') {
             if (isset($_GET['id'], $_GET['token']) && $_GET['id'] >=0 && $_GET['token'] == $_SESSION['token']) {
