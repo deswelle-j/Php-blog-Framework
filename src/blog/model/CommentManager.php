@@ -71,13 +71,6 @@ class CommentManager extends Manager
         return $affectedLines;
     }
 
-    // public function editComment($commentId, $newComment)
-    // {
-    //     $db = $this->dbConnect();
-    //     $req = $db->prepare('UPDATE comments SET comment = :newComment , comment_date = NOW() WHERE id = :id ');
-    //     $req -> execute(array('id' => $commentId , 'newComment' => $newComment ));
-    // }
-
     public function updatePulicationComment($commentId)
     {
         $db = $this->dbConnect();
