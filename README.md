@@ -40,7 +40,6 @@ reflected into the site.
 
 ## Code Quality ?
 
-code quality was checked by adding codeclimate to the project you can see the last analis 
-[here at codeclimate](https://codeclimate.com/github/deswelle-j/Php-blog-Framework/issues?category%5B%5D=complexity&category%5B%5D=style&status%5B%5D=&status%5B%5D=open&status%5B%5D=confirmed&engine_name%5B%5D=structure&engine_name%5B%5D=duplication&engine_name%5B%5D=phpcodesniffer&language_name%5B%5D=PHP)
+code quality was checked by adding codeclimate to the project you can see the last analysis 
 
 <a href="https://codeclimate.com/github/deswelle-j/Php-blog-Framework/maintainability"><img src="https://api.codeclimate.com/v1/badges/1244ac181c7d2bccb580/maintainability" /></a>
