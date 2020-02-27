@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{% block title %}{% endblock %} &mdash; Free Bootstrap Theme, Free Responsive Bootstrap Website Template</title>
+    <title>{% block title %}{% endblock %} &mdash; Johan Deswelle blog</title>
     <meta name="description" content="Free Bootstrap Theme by uicookies.com">
     <meta name="keywords" content="free website templates, free bootstrap themes, free template, free bootstrap, free website template">
     
@@ -23,7 +23,7 @@
   <!-- START: header -->
     <header role="banner" class="probootstrap-header">
     <div class="container-fluid">
-        <a href="index.html" class="probootstrap-logo"><img style="width: 80px" src="img/logo-jd.png" alt="">
+        <a href="index.php" class="probootstrap-logo"><img style="width: 80px" src="img/logo-jd.png" alt="">
           <span  style="color: #17A2B8;">Johan Deswelle</span><span>.</span>
         </a>
         
@@ -32,24 +32,25 @@
 
         <nav role="navigation" class="probootstrap-nav hidden-xs">
           <ul class="probootstrap-main-nav">
-            <li class="active"><a href="index.php" >Home</a></li>
+            <li><a href="index.php" >Home</a></li>
             <li><a href="index.php?action=listPosts" >Blog</a></li>
             <li><a href="index.php#contact-section" >Contact</a></li>
-            <li><a href="index.php?action=authentification" >Admin</a></li>
+            {% if not isConnected() %}
+            <li><a href="index.php?action=authentification" >Connexion</a></li>
+            {% endif %}
+            {% if isConnected() %}
+            <li><a href="index.php?action=authentification" >Bonjour {{ session }}</a></li>
+            <li><button type="button" class="btn btn-primary my-2 my-lg-0" onclick="location.href='index.php?action=logOut';">Déconnexion</button></li>
+            {% endif %}
           </ul>
           <ul class="probootstrap-header-social hidden-xs">
             <li><a href="https://www.linkedin.com/in/johan-deswelle"><i class="icon-linkedin"></i></a></li>
-            {# <li><a href="#"><i class="icon-facebook2"></i></a></li>
-            <li><a href="#"><i class="icon-instagram2"></i></a></li> #}
           </ul>
           <div class="extra-text visible-xs">
             <a href="#" class="probootstrap-burger-menu"><i>Menu</i></a>
             <h5>Social</h5>
             <ul class="social-buttons">
               <li><a href="https://www.linkedin.com/in/johan-deswelle"><i class="icon-linkedin"></i></a></li>
-              {# <li><a href="#"><i class="icon-facebook2"></i></a></li>
-              <li><a href="#"><i class="icon-instagram2"></i></a></li> #}
-              
             </ul>
           </div>
         </nav>
@@ -80,10 +81,19 @@ dans les règles de l'art.</h1>
      <div class="container">
        <div class="row">
          <div class="col-md-6">
-           <p class="mb0">&copy; Copyright 2017 <a href="https://uicookies.com/">uiCookies:Bold</a>. All Rights Reserved. <br> Designed &amp; Developed with <i class="icon-heart" style="position: relative; top: 2px;"></i> by <a href="https://uicookies.com">uicookies.com</a> <br> Images Demo Unsplash.com &amp; NothingToChance.co</p>
+            <p class="mb0">&copy; Copyright 2019 <a href="https://uicookies.com/">uiCookies:Bold</a>. All Rights Reserved. <br> Designed with by <a href="https://uicookies.com">uicookies.com</a></p>
+            <a href="index.php?action=authentification" >Connexion au site</a>
          </div>
-         <div class="col-md-6">
-           <p class="mb0 probootstrap-back-to-top"><a href="#" class="js-backtotop">Back to top</a></p>
+         <div class="col-md-3">
+          <p>Page du site</p>
+          <ul>
+            <li><a href="index.php" >Home</a></li>
+            <li><a href="index.php?action=listPosts" >Blog</a></li>
+            <li><a href="index.php#contact-section" >Contact</a></li>
+          </ul>
+         </div>
+         <div class="col-md-3">
+          <p class="mb0 probootstrap-back-to-top"><a href="#" class="js-backtotop">Back to top</a></p>
          </div>
        </div>
      </div>

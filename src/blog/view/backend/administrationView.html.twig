@@ -6,34 +6,67 @@
     <table class="table table-striped table-hover table-bordered">
         <thead class="thead-dark">
             <tr>
-                <th>id</th><th>titre</th><th>contenu</th><th>date de creation</th><th></th>
+                <th>titre</th><th>Chapeau de contenu</th><th>date de creation</th><th>Publié</th><th>Action</th>
             </tr>
         </thead>
+        <tbody>
         {% for post in posts %}
                 <tr>
-                    <td>{{post.id}}</td>
                     <td>{{post.title }}</td>
-                    <td>{{post.content}}</td>
+                    <td>{{post.kicker}}</td>
                     <td>{{post.dateCreation}}</td>
+                    <td>{{post.published ? 'Oui' : 'Non'}}</td>
+                    <td>
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Action
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" href="index.php?action=publish-post&amp;id={{post.id}}&amp;token={{token}}">{{post.published ? 'Dépublier' : 'Publier'}}</a>
+                                <a class="dropdown-item" href="index.php?action=edit-post&amp;id={{post.id}}&amp;token={{token}}">Editer</a>
+                                <a class="dropdown-item" href="index.php?action=delete-post&amp;id={{post.id}}&amp;token={{token}}">Supprimer</a>
+                            </div>
+                        </div>
+                    </td>
                 </tr>
                         
         {% endfor %}
+            <tr>
+                <td>
+                    <div>
+                        <button type="button" class="btn btn-primary my-2 my-lg-0" onclick="location.href='index.php?action=edit-post&amp;token={{token}}';">Ajouter un post</button>
+                        {# <a href="index.php?action=edit-post">Ajouter un post</a> #}
+                    </div>
+                </td>
+                    
+            </tr>
+        </tbody>
+
+    
     </table>
+    {% if isDisplayComments() %}
     <h3>Les commentaires</h3>
     <table class="table table-striped table-hover table-bordered">
         <thead class="thead-dark">
             <tr>
-                <th>id</th><th>autheur</th><th>commentaire</th><th>numero du billet</th><th>date de creation</th>
+                <th>auteur</th><th>commentaire</th><th>numero du billet</th><th>date de creation</th><th>Publié</th><th>Action</th>
             </tr>
         </thead>
         {% for comment in comments %}
             <tr>
-                <td>{{comment.id}}</td>
                 <td>{{comment.author}}</td>
                 <td>{{comment.comment}}</td>
                 <td>{{comment.postId}}</td>
                 <td>{{comment.commentDate}} </td>
+                <td>{{comment.publish ? 'Oui' : 'Non'}}</td>
+                <td>
+                    <a class="dropdown-item" 
+                        href="index.php?action=publish-comment&amp;id={{comment.id}}&amp;token={{token}}">{{comment.publish ? 'Dépublier' : 'Publier'}}
+                    </a>
+                </td>
             </tr>
                         
         {% endfor %}
+    </table>
+    {% endif %}
 {% endblock %}

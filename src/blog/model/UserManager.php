@@ -8,7 +8,7 @@ class UserManager extends Manager
     public function userAuthentification($login)
     {
         $db = $this->dbConnect();
-        $req= $db->prepare('SELECT id, email, password, role, firstname, lastname FROM users WHERE email = :login');
+        $req= $db->prepare('SELECT id, email, password, role, firstname, lastname, username FROM users WHERE email = :login');
         $req->bindValue(':login', $login, PDO::PARAM_STR);
         $req->execute();
         $user = $req->fetchAll();
@@ -42,29 +42,31 @@ class UserManager extends Manager
         return $userAll;
     }
 
-    public function userCreation($login, $password, $firstname, $lastname)
+    public function userCreation($login, $password, $firstname, $username, $lastname)
     {
         $db = $this->dbConnect();
-        $req= $db->prepare('INSERT INTO users (email, password, role, firstname, lastname)
-        VALUES (:login, :password, :role, :firstname, :lastname )');
+        $req= $db->prepare('INSERT INTO users (email, password, role, firstname, lastname, username)
+        VALUES (:login, :password, :role, :firstname, :lastname, :username )');
         $req->bindValue(':login', $login, PDO::PARAM_STR);
         $req->bindValue(':password', $password, PDO::PARAM_STR);
         $req->bindValue(':role', 'visitor', PDO::PARAM_STR);
         $req->bindValue(':firstname', $firstname, PDO::PARAM_STR);
         $req->bindValue(':lastname', $lastname, PDO::PARAM_STR);
+        $req->bindValue(':username', $username, PDO::PARAM_STR);
         $req->execute();
     }
 
-    public function superUserCreation($login, $password, $firstname, $lastname, $role)
+    public function superUserCreation($login, $password, $firstname, $lastname, $username, $role)
     {
         $db = $this->dbConnect();
-        $req= $db->prepare('INSERT INTO users (email, password, role, firstname, lastname)
-        VALUES (:login, :password, :role, :firstname, :lastname )');
+        $req= $db->prepare('INSERT INTO users (email, password, role, firstname, lastname, username)
+        VALUES (:login, :password, :role, :firstname, :lastname, :username )');
         $req->bindValue(':login', $login, PDO::PARAM_STR);
         $req->bindValue(':password', $password, PDO::PARAM_STR);
         $req->bindValue(':role', $role, PDO::PARAM_STR);
         $req->bindValue(':firstname', $firstname, PDO::PARAM_STR);
         $req->bindValue(':lastname', $lastname, PDO::PARAM_STR);
+        $req->bindValue(':username', $username, PDO::PARAM_STR);
         $req->execute();
     }
 }

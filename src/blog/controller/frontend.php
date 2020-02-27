@@ -4,7 +4,7 @@ namespace Framework\Blog\Controller;
 
 use Framework\Blog\Model\PostManager;
 use Framework\Blog\Model\CommentManager;
-use Framework\Blog\Model\UsersManager;
+use Framework\Blog\Model\UserManager;
 use Framework\Blog\Utils\Session;
 
 class Frontend
@@ -46,31 +46,19 @@ class Frontend
         }
     }
 
-    public function edit($twig)
-    {
-        // 2 options : no data from the form or the data is present
-        if (isset($_POST['modif'])) {
-            $commentManager = new CommentManager();
-            $edit = $commentManager->editComment($_GET['id'], $_POST['modif']);
-            header("Location:index.php?action=post&id=".$_GET['post_id']);
-        } else {
-            require('../src/blog/view/frontend/editView.php');
-        }
-    }
-
-    public function userCreation($twig, $email = false, $password = false, $firstname = false, $lastname = false)
+    public function userCreation($twig, $email = false, $password = false, $firstname = false, $lastname = false, $username = false)
     {
         
-        if ($email != false && $password != false && $firstname != false && $lastname != false) {
+        if ($email != false && $password != false && $firstname != false && $lastname != false && $username != false) {
             $login = trim($email);
             $password =trim($password);
             $firstname = trim($firstname);
             $lastname = trim($lastname);
             if (filter_var($login, FILTER_VALIDATE_EMAIL) && !empty($password) && !empty($firstname) &&
                 !empty($lastname)) {
-                $userManager = new UsersManager();
+                $userManager = new UserManager();
                 $password = password_hash($password, PASSWORD_DEFAULT);
-                $user = $userManager->userCreation($login, $password, $firstname, $lastname);
+                $user = $userManager->userCreation($login, $password, $firstname, $lastname, $username);
                 header('Location: index.php');
             } else {
                 throw new Exception('Information de connexion incorrectes');
@@ -81,10 +69,9 @@ class Frontend
     }
     public function sendContactMail($twig, $fname = false, $lname = false, $email = false, $subject = false, $message = false)
     {
-        var_dump($fname, $lname, $email, $subject, $message);
         if ($fname !== false && $lname !== false && $email !== false && $subject !== false && $message !== false) {
-            var_dump('on entre');
             $to_email = TO_EMAIL ;
+            $subject = $subject . ' From: '. $email; 
             mail($to_email, $subject, $message);
             header('Location: index.php');
         } else {
