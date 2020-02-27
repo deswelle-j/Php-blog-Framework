@@ -86,7 +86,7 @@ class PostManager extends Manager
                 LEFT JOIN users ON posts.author = users.id
                 ORDER BY creation_date 
                 DESC'
-            ); 
+            );
             $req->execute();
         } else {
             $req = $db->prepare(
@@ -186,7 +186,8 @@ class PostManager extends Manager
         return;
     }
 
-    public function getPostsAuthor($postId) {
+    public function getPostsAuthor($postId)
+    {
         $db = $this->dbConnect();
         $req = $db->prepare(
             'SELECT author 
@@ -227,7 +228,8 @@ class PostManager extends Manager
         return;
     }
 
-    public function removePost($postid) {
+    public function removePost($postid)
+    {
         $db = $this->dbConnect();
         $req = $db->prepare(
             'DELETE FROM posts WHERE id = :id'
