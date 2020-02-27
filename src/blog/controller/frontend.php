@@ -67,8 +67,14 @@ class Frontend
             echo $twig->render('signUpView.html.twig');
         }
     }
-    public function sendContactMail($twig, $fname = false, $lname = false, $email = false,
-    $subject = false, $message = false)
+    public function sendContactMail(
+        $twig, 
+        $fname = false, 
+        $lname = false, 
+        $email = false,
+        $subject = false, 
+        $message = false
+        )
     {
         if ($fname !== false && $lname !== false && $email !== false && $subject !== false && $message !== false) {
             $to_email = TO_EMAIL ;
