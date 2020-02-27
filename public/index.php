@@ -21,14 +21,14 @@ $isConnected = new \Twig\TwigFunction('isConnected', function () {
 
 $twig->addFunction($isConnected);
 $isGranted= new \Twig\TwigFunction('isGranted', function () {
-    if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin' ){
+    if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin' ) {
         return true;
     }
     return false;
 });
 $twig->addFunction($isGranted);
 $isDisplayComments= new \Twig\TwigFunction('isDisplayComments', function () {
-    if (isset($_SESSION['user_role']) && $_SESSION['user_role'] !== 'contributor' ){
+    if (isset($_SESSION['user_role']) && $_SESSION['user_role'] !== 'contributor') {
         return true;
     }
     return false;
@@ -45,7 +45,7 @@ $backend =  new Backend();
 
 if (!isset($_SESSION['token'])) {
     $_SESSION['token'] = bin2hex(openssl_random_pseudo_bytes(6));
- }
+}
 
 try {
     if (isset($_GET['action'])) {
@@ -82,7 +82,8 @@ try {
                 $_POST['inputTitle'],
                 $_POST['inputKicker'],
                 $_POST['inputContent'],
-                $_POST['token']) && $_POST['token'] == $_SESSION['token']
+                $_POST['token']
+                ) && $_POST['token'] == $_SESSION['token']
                 ) {
                 $backend->savePost($twig, $_POST['inputTitle'], $_POST['inputKicker'], $_POST['inputContent'], $_GET['id']);
             } else {
@@ -112,7 +113,6 @@ try {
         }
         if ($_GET['action'] == 'authentification') {
             if (isset($_SESSION['user']) && $_SESSION['user_role']) {
-
                 $backend->listPost($twig, $_SESSION['user_role']);
             } elseif (isset($_POST['inputEmail'], $_POST['inputPassword'])) {
                 $backend->userConnection($twig, $_POST['inputEmail'], $_POST['inputPassword']);

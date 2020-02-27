@@ -74,7 +74,7 @@ class PostManager extends Manager
         return $postAll;
     }
 
-    public function getAdminPosts( $user = false)
+    public function getAdminPosts($user = false)
     {
         $db = $this->dbConnect();
         if ($user === false) {
@@ -211,7 +211,7 @@ class PostManager extends Manager
         $req->execute();
         $post = $req->fetch();
         $req->closeCursor();
-        if ($post['published'] === '1' ) {
+        if ($post['published'] === '1') {
             $publication = 0;
         } else {
             $publication = 1;

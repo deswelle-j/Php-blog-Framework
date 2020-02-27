@@ -89,7 +89,7 @@ class CommentManager extends Manager
         $req->execute();
         $comment = $req->fetch();
         $req->closeCursor();
-        if ($comment['published'] === '1' ) {
+        if ($comment['published'] === '1') {
             $publication = 0;
         } else {
             $publication = 1;
@@ -104,5 +104,4 @@ class CommentManager extends Manager
         $req->execute();
         return;
     }
-
 }

@@ -8,7 +8,8 @@ class UserManager extends Manager
     public function userAuthentification($login)
     {
         $db = $this->dbConnect();
-        $req= $db->prepare('SELECT id, email, password, role, firstname, lastname, username FROM users WHERE email = :login');
+        $req= $db->prepare('SELECT id, email, password, role, firstname, lastname, username FROM users 
+        WHERE email = :login');
         $req->bindValue(':login', $login, PDO::PARAM_STR);
         $req->execute();
         $user = $req->fetchAll();

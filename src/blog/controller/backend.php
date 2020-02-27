@@ -77,16 +77,15 @@ class Backend
         if ($role === 'admin') {
             $userManager = new UserManager();
             $users = $userManager->getUsers();
-            echo $twig->render('@admin/adminSuperuserView.html.twig',
-            [
-                'users' => $users
-            ]);
+            echo $twig->render('@admin/adminSuperuserView.html.twig', ['users' => $users]);
         }
     }
 
-    public function superUserCreation($twig, $email = false, $password = false, $firstname = false, $lastname = false, $username = false, $role = false)
+    public function superUserCreation($twig, $email = false, $password = false, $firstname = false, 
+    $lastname = false, $username = false, $role = false)
     {
-        if ($email != false && $password != false && $firstname != false && $lastname != false && $role != false && $username != false) {
+        if ($email != false && $password != false && $firstname != false && $lastname != false && 
+        $role != false && $username != false) {
             $login = trim($email);
             $password =trim($password);
             $firstname = trim($firstname);
@@ -156,12 +155,13 @@ class Backend
         if ($postid) {
             $post = $postManager->updatePost($postid, $title, $kicker, $content, $_SESSION['user']);
         } else {
-            $post = $postManager->insertPost( $title, $kicker, $content, $_SESSION['user']);
+            $post = $postManager->insertPost($title, $kicker, $content, $_SESSION['user']);
         }
         header('Location: index.php?action=authentification');
     }
 
-    public function deletePost($twig, $postid) {
+    public function deletePost($twig, $postid) 
+    {
         if (isset($postid)) {
             $postManager = new PostManager();
             $postManager->removePost($postid);
