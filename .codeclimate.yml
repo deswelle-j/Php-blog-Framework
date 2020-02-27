@@ -10,3 +10,4 @@ exclude_patterns:
 - "public/js"
 - "public/fonts"
 - "public/img"
+- "conf/env"
