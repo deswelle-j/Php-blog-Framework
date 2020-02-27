@@ -81,9 +81,15 @@ class Backend
         }
     }
 
-    public function superUserCreation($twig, $email = false, $password = false, $firstname = false, 
-    $lastname = false, $username = false, $role = false)
-    {
+    public function superUserCreation(
+        $twig,
+        $email = false,
+        $password = false,
+        $firstname = false,
+        $lastname = false,
+        $username = false,
+        $role = false
+    ) {
         if ($email != false && $password != false && $firstname != false && $lastname != false && 
         $role != false && $username != false) {
             $login = trim($email);
