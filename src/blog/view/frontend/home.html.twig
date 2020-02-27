@@ -67,7 +67,7 @@
               <h3 class="mt0">
                 <a href="index.php?action=post&amp;id={{post.id}}" class="hover-reverse">{{post.title }}</a>
               </h3>
-              <p class="text-mute mb40">{{post.dateCreation}} &bull; by {{post.author}}</p>
+              <p class="text-mute mb40">{{post.modificationDate}} &bull; by {{post.author}}</p>
             </div>
             <div class="col-md-6">
               <ul class="probootstrap-blog-list">
@@ -81,7 +81,7 @@
                             {{post.title }}
                       </a>
                     </h3>
-                    <p class="text-mute mb20">{{post.dateCreation}} &bull;    by {{post.author}}</p>
+                    <p class="text-mute mb20">{{post.modificationDate}} &bull;    by {{post.author}}</p>
                   </div>
                 </a>
               </li>
@@ -99,6 +99,7 @@
         <div class="row">
           <div class="col-md-6">
             <form action="index.php?action=mail" method="post" class="probootstrap-form">
+              <h3>Formulaire de contact</h3>
               <div class="row">
                 <div class="col-md-6">
                   <div class="form-group">
