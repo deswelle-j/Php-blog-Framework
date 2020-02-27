@@ -114,7 +114,7 @@ try {
                 $backend->publishComment($twig, $_GET['id']);
             } else {
                 throw new Exception('Erreur : identifiant identifiant de billet ou token non envoyé');
-            } 
+            }
         }
         if ($_GET['action'] == 'authentification') {
             if (isset($_SESSION['user']) && $_SESSION['user_role']) {
