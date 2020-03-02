@@ -9,26 +9,33 @@ use Framework\Blog\Utils\Session;
 
 class Frontend
 {
+    private $_postManager;
+    private $_commentManager;
+    private $_userManager;
+
+    public function __construct()
+    {
+        $this->_postManager = new PostManager();
+        $this->_commentManager = new CommentManager();
+        $this->_userManager = new UserManager();
+    }
+
     public function home($twig)
     {
-        $postManager = new PostManager();
-        $posts = $postManager->lastPosts();
+        $posts = $this->_postManager->lastPosts();
         echo $twig->render('home.html.twig', ['posts' => $posts]);
     }
 
     public function listPosts($twig)
     {
-        $postManager = new PostManager();
-        $posts = $postManager->getPosts();
+        $posts = $this->_postManager->getPosts();
         echo $twig->render('listPosts.html.twig', ['posts' => $posts ]);
     }
 
     public function post($twig)
     {
-        $postManager = new PostManager();
-        $commentManager = new CommentManager();
-        $post = $postManager->getPost($_GET['id']);
-        $comments = $commentManager->getComments($_GET['id']);
+        $post = $this->_postManager->getPost($_GET['id']);
+        $comments = $this->_commentManager->getComments($_GET['id']);
         echo $twig->render('postView.html.twig', [
             'post' => $post,
             'comments' => $comments
@@ -37,8 +44,7 @@ class Frontend
 
     public function addComment($postId, $author, $comment)
     {
-        $commentManager = new CommentManager();
-        $affectedLines = $commentManager->postComment($postId, $author, $comment);
+        $affectedLines = $this->_commentManager->postComment($postId, $author, $comment);
         if ($affectedLines === false) {
             throw new Exception('Impossible d\'ajouter le commentaire !');
         } else {
@@ -62,9 +68,8 @@ class Frontend
             $lastname = trim($lastname);
             if (filter_var($login, FILTER_VALIDATE_EMAIL) && !empty($password) && !empty($firstname) &&
                 !empty($lastname)) {
-                $userManager = new UserManager();
                 $password = password_hash($password, PASSWORD_DEFAULT);
-                $user = $userManager->userCreation($login, $password, $firstname, $lastname, $username);
+                $user = $this->_userManager->userCreation($login, $password, $firstname, $lastname, $username);
                 header('Location: index.php');
             } else {
                 throw new Exception('Information de connexion incorrectes');

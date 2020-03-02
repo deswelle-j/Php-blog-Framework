@@ -2,15 +2,23 @@
 
 namespace Framework\Blog\Model;
 
+use Framework\Blog\Model\DbManager;
 use Framework\Blog\Model\Post;
 use \PDO;
 
-class PostManager extends Manager
+class PostManager Extends DbManager
 {
+    private $_db;
+
+    public function __construct()
+    {
+        $this->_db = $this->dbConnect();
+    }
+
     public function lastPosts()
     {
-        $db = $this->dbConnect();
-        $req = $db->query(
+        // $db = Db::getInstance();
+        $req = $this->_db->query(
             'SELECT posts.id, title, content, kicker, username, published, 
             DATE_FORMAT(creation_date, \'%d/%m/%Y à %Hh%imin%ss\') AS creation_date_fr, 
             DATE_FORMAT(modification_date, \'%d/%m/%Y à %Hh%imin%ss\') AS modification_date_fr 
@@ -43,8 +51,8 @@ class PostManager extends Manager
     
     public function getPosts()
     {
-        $db = $this->dbConnect();
-        $req = $db->query(
+        // $db = DbManager::getInstance();
+        $req = $this->_db->query(
             'SELECT posts.id, title, content, kicker, username, published, 
             DATE_FORMAT(creation_date, \'%d/%m/%Y à %Hh%imin%ss\') AS creation_date_fr,
             DATE_FORMAT(modification_date, \'%d/%m/%Y à %Hh%imin%ss\') AS modification_date_fr 
@@ -76,9 +84,9 @@ class PostManager extends Manager
 
     public function getAdminPosts($user = false)
     {
-        $db = $this->dbConnect();
+        // $db = DbManager::getInstance();
         if ($user === false) {
-            $req = $db->query(
+            $req = $this->_db->query(
                 'SELECT posts.id, title, content, kicker, username, published, 
                 DATE_FORMAT(creation_date, \'%d/%m/%Y à %Hh%imin%ss\') AS creation_date_fr,
                 DATE_FORMAT(modification_date, \'%d/%m/%Y à %Hh%imin%ss\') AS modification_date_fr 
@@ -123,8 +131,8 @@ class PostManager extends Manager
 
     public function getPost($postId)
     {
-        $db = $this->dbConnect();
-        $req = $db->prepare(
+        // $db = DbManager::getInstance();
+        $req = $this->_db->prepare(
             'SELECT posts.id, title, content, kicker, username, published, 
             DATE_FORMAT(creation_date, \'%d/%m/%Y à %Hh%imin%ss\') AS creation_date_fr,
             DATE_FORMAT(modification_date, \'%d/%m/%Y à %Hh%imin%ss\') AS modification_date_fr 
@@ -135,6 +143,7 @@ class PostManager extends Manager
         $req->bindValue(':id', $postId, PDO::PARAM_INT);
         $req->execute();
         $post = $req->fetch();
+        $req->closeCursor();
         return new Post(
             $post['id'],
             $post['title'],
@@ -150,8 +159,8 @@ class PostManager extends Manager
     public function updatePost($postid, $title, $kicker, $content, $author)
     {
 
-        $db = $this->dbConnect();
-        $req = $db->prepare(
+        // $db = DbManager::getInstance();
+        $req = $this->_db->prepare(
             'UPDATE posts SET title = :title,
              kicker = :kicker, 
              author = :author, 
@@ -167,13 +176,14 @@ class PostManager extends Manager
         $req->bindValue(':author', intval($author), PDO::PARAM_INT);
         $req->bindValue(':content', $content, PDO::PARAM_STR);
         $req->execute();
+        $req->closeCursor();
         return;
     }
 
     public function insertPost($title, $kicker, $content, $author)
     {
-        $db = $this->dbConnect();
-        $req = $db->prepare(
+        // $db = DbManager::getInstance();
+        $req = $this->_db->prepare(
             'INSERT INTO posts (title, kicker, content, author, creation_date, modification_date, published) 
             VALUES ( :title, :kicker, :content, :author, NOW(), NOW(), 0)'
         );
@@ -188,8 +198,8 @@ class PostManager extends Manager
 
     public function getPostsAuthor($postId)
     {
-        $db = $this->dbConnect();
-        $req = $db->prepare(
+        // $db = DbManager::getInstance();
+        $req = $this->_db->prepare(
             'SELECT author 
             FROM posts
             WHERE   id = :id'
@@ -197,13 +207,14 @@ class PostManager extends Manager
         $req->bindValue(':id', $postId, PDO::PARAM_INT);
         $req->execute();
         $author = $req->fetch();
+        $req->closeCursor();
         return $author;
     }
 
     public function updatePulicationPost($postid)
     {
-        $db = $this->dbConnect();
-        $req = $db->prepare(
+        // $db = DbManager::getInstance();
+        $req = $this->_db->prepare(
             'SELECT id, published
             FROM posts
             WHERE id = :id'
@@ -225,17 +236,19 @@ class PostManager extends Manager
         $req->bindValue(':id', $postid, PDO::PARAM_INT);
         $req->bindValue(':published', $publication, PDO::PARAM_INT);
         $req->execute();
+        $req->closeCursor();
         return;
     }
 
     public function removePost($postid)
     {
-        $db = $this->dbConnect();
-        $req = $db->prepare(
+        // $db = DbManager::getInstance();
+        $req = $this->_db->prepare(
             'DELETE FROM posts WHERE id = :id'
         );
         $req->bindValue(':id', $postid, PDO::PARAM_INT);
         $req->execute();
+        $req->closeCursor();
         return;
     }
 }
