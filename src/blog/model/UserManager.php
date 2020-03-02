@@ -1,14 +1,21 @@
 <?php
 namespace Framework\Blog\Model;
 
+use Framework\Blog\Model\DbManager;
 use PDO;
 
-class UserManager extends Manager
+class UserManager Extends DbManager
 {
+    private $_db;
+
+    public function __construct()
+    {
+        $this->_db = $this->dbConnect();
+    }
+
     public function userAuthentification($login)
     {
-        $db = $this->dbConnect();
-        $req= $db->prepare('SELECT id, email, password, role, firstname, lastname, username FROM users 
+        $req= $this->_db->prepare('SELECT id, email, password, role, firstname, lastname, username FROM users 
         WHERE email = :login');
         $req->bindValue(':login', $login, PDO::PARAM_STR);
         $req->execute();
@@ -18,8 +25,7 @@ class UserManager extends Manager
 
     public function getUsers()
     {
-        $db = $this->dbConnect();
-        $req = $db->query(
+        $req = $this->_db->query(
             'SELECT id, email, role, firstname, lastname 
             FROM users 
             ORDER BY email 
@@ -45,8 +51,7 @@ class UserManager extends Manager
 
     public function userCreation($login, $password, $firstname, $username, $lastname)
     {
-        $db = $this->dbConnect();
-        $req= $db->prepare('INSERT INTO users (email, password, role, firstname, lastname, username)
+        $req= $this->_db->prepare('INSERT INTO users (email, password, role, firstname, lastname, username)
         VALUES (:login, :password, :role, :firstname, :lastname, :username )');
         $req->bindValue(':login', $login, PDO::PARAM_STR);
         $req->bindValue(':password', $password, PDO::PARAM_STR);
@@ -59,8 +64,7 @@ class UserManager extends Manager
 
     public function superUserCreation($login, $password, $firstname, $lastname, $username, $role)
     {
-        $db = $this->dbConnect();
-        $req= $db->prepare('INSERT INTO users (email, password, role, firstname, lastname, username)
+        $req= $this->_db->prepare('INSERT INTO users (email, password, role, firstname, lastname, username)
         VALUES (:login, :password, :role, :firstname, :lastname, :username )');
         $req->bindValue(':login', $login, PDO::PARAM_STR);
         $req->bindValue(':password', $password, PDO::PARAM_STR);

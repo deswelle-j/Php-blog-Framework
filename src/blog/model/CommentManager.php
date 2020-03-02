@@ -2,14 +2,21 @@
 
 namespace Framework\Blog\Model;
 
+use Framework\Blog\Model\DbManager;
 use \PDO;
 
-class CommentManager extends Manager
+class CommentManager Extends DbManager
 {
+    private $_db;
+
+    public function __construct()
+    {
+        $this->_db = $this->dbConnect();
+    }
+    
     public function getComments($postId)
     {
-        $db = $this->dbConnect();
-        $comments = $db->prepare(
+        $comments = $this->_db->prepare(
             'SELECT comments.id, post_id, username, comment, published,
             DATE_FORMAT(comment_date, \'%d/%m/%Y à %Hh%imin%ss\') AS comment_date_fr 
             FROM comments 
@@ -37,8 +44,7 @@ class CommentManager extends Manager
 
     public function getCommentsList()
     {
-        $db = $this->dbConnect();
-        $req = $db->query(
+        $req = $this->_db->query(
             'SELECT comments.id, post_id, username as author, comment, published,
             DATE_FORMAT(comment_date, \'%d/%m/%Y à %Hh%imin%ss\') AS comment_date_fr 
             FROM comments 
@@ -65,23 +71,14 @@ class CommentManager extends Manager
 
     public function postComment($postId, $author, $comment)
     {
-        $db = $this->dbConnect();
-        $comments = $db->prepare('INSERT INTO comments(post_id, author, comment, comment_date) VALUES(?, ?, ?, NOW())');
+        $comments = $this->_db->prepare('INSERT INTO comments(post_id, author, comment, comment_date) VALUES(?, ?, ?, NOW())');
         $affectedLines = $comments->execute(array($postId, $author, $comment));
         return $affectedLines;
     }
 
-    // public function editComment($commentId, $newComment)
-    // {
-    //     $db = $this->dbConnect();
-    //     $req = $db->prepare('UPDATE comments SET comment = :newComment , comment_date = NOW() WHERE id = :id ');
-    //     $req -> execute(array('id' => $commentId , 'newComment' => $newComment ));
-    // }
-
     public function updatePulicationComment($commentId)
     {
-        $db = $this->dbConnect();
-        $req = $db->prepare(
+        $req = $this->_db->prepare(
             'SELECT id, published
             FROM comments
             WHERE id = :id'
@@ -95,7 +92,7 @@ class CommentManager extends Manager
         } else {
             $publication = 1;
         }
-        $req = $db->prepare(
+        $req = $this->_db->prepare(
             'UPDATE comments
             SET published = :published 
             WHERE id = :id'
