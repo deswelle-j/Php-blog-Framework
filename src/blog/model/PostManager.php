@@ -17,7 +17,6 @@ class PostManager Extends DbManager
 
     public function lastPosts()
     {
-        // $db = Db::getInstance();
         $req = $this->_db->query(
             'SELECT posts.id, title, content, kicker, username, published, 
             DATE_FORMAT(creation_date, \'%d/%m/%Y à %Hh%imin%ss\') AS creation_date_fr, 
@@ -51,7 +50,6 @@ class PostManager Extends DbManager
     
     public function getPosts()
     {
-        // $db = DbManager::getInstance();
         $req = $this->_db->query(
             'SELECT posts.id, title, content, kicker, username, published, 
             DATE_FORMAT(creation_date, \'%d/%m/%Y à %Hh%imin%ss\') AS creation_date_fr,
@@ -84,7 +82,6 @@ class PostManager Extends DbManager
 
     public function getAdminPosts($user = false)
     {
-        // $db = DbManager::getInstance();
         if ($user === false) {
             $req = $this->_db->query(
                 'SELECT posts.id, title, content, kicker, username, published, 
@@ -97,7 +94,7 @@ class PostManager Extends DbManager
             );
             $req->execute();
         } else {
-            $req = $db->prepare(
+            $req = $this->_db->prepare(
                 'SELECT posts.id, title, content, kicker, username, published, 
                 DATE_FORMAT(creation_date, \'%d/%m/%Y à %Hh%imin%ss\') AS creation_date_fr,
                 DATE_FORMAT(modification_date, \'%d/%m/%Y à %Hh%imin%ss\') AS modification_date_fr 
@@ -131,7 +128,6 @@ class PostManager Extends DbManager
 
     public function getPost($postId)
     {
-        // $db = DbManager::getInstance();
         $req = $this->_db->prepare(
             'SELECT posts.id, title, content, kicker, username, published, 
             DATE_FORMAT(creation_date, \'%d/%m/%Y à %Hh%imin%ss\') AS creation_date_fr,
@@ -158,8 +154,6 @@ class PostManager Extends DbManager
 
     public function updatePost($postid, $title, $kicker, $content, $author)
     {
-
-        // $db = DbManager::getInstance();
         $req = $this->_db->prepare(
             'UPDATE posts SET title = :title,
              kicker = :kicker, 
@@ -182,7 +176,6 @@ class PostManager Extends DbManager
 
     public function insertPost($title, $kicker, $content, $author)
     {
-        // $db = DbManager::getInstance();
         $req = $this->_db->prepare(
             'INSERT INTO posts (title, kicker, content, author, creation_date, modification_date, published) 
             VALUES ( :title, :kicker, :content, :author, NOW(), NOW(), 0)'
@@ -198,7 +191,6 @@ class PostManager Extends DbManager
 
     public function getPostsAuthor($postId)
     {
-        // $db = DbManager::getInstance();
         $req = $this->_db->prepare(
             'SELECT author 
             FROM posts
@@ -213,7 +205,6 @@ class PostManager Extends DbManager
 
     public function updatePulicationPost($postid)
     {
-        // $db = DbManager::getInstance();
         $req = $this->_db->prepare(
             'SELECT id, published
             FROM posts
@@ -228,7 +219,7 @@ class PostManager Extends DbManager
         } else {
             $publication = 1;
         }
-        $req = $db->prepare(
+        $req = $this->_db->prepare(
             'UPDATE posts
             SET published = :published 
             WHERE id = :id'
@@ -242,7 +233,6 @@ class PostManager Extends DbManager
 
     public function removePost($postid)
     {
-        // $db = DbManager::getInstance();
         $req = $this->_db->prepare(
             'DELETE FROM posts WHERE id = :id'
         );

@@ -72,7 +72,12 @@ try {
         }
         if ($_GET['action'] == 'edit-post') {
             if (isset($_GET['token']) && $_GET['token'] == $_SESSION['token']) {
-                $backend->editPost($twig, $_GET['id']);
+                if (isset($_GET['id'])) {
+                    $backend->editPost($twig, $_GET['id']);
+                } else {
+                    $backend->editPost($twig);
+                }
+                
             } else {
                 throw new Exception('Erreur : identifiant de token non envoyé');
             }

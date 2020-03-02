@@ -22,7 +22,9 @@
                                 Action
                             </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                {% if isDisplayComments() %}
                                 <a class="dropdown-item" href="index.php?action=publish-post&amp;id={{post.id}}&amp;token={{token}}">{{post.published ? 'Dépublier' : 'Publier'}}</a>
+                                {% endif %}
                                 <a class="dropdown-item" href="index.php?action=edit-post&amp;id={{post.id}}&amp;token={{token}}">Editer</a>
                                 <a class="dropdown-item" href="index.php?action=delete-post&amp;id={{post.id}}&amp;token={{token}}">Supprimer</a>
                             </div>
