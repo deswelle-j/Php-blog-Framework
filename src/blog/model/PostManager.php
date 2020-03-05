@@ -2,22 +2,16 @@
 
 namespace Framework\Blog\Model;
 
-use Framework\Blog\Model\DbManager;
+use Framework\Blog\Model\SPDO;
 use Framework\Blog\Model\Post;
 use \PDO;
 
-class PostManager Extends DbManager
+class PostManager
 {
-    private $_db;
-
-    public function __construct()
-    {
-        $this->_db = $this->dbConnect();
-    }
 
     public function lastPosts()
     {
-        $req = $this->_db->query(
+        $req = SPDO::getInstance()->query(
             'SELECT posts.id, title, content, kicker, username, published, 
             DATE_FORMAT(creation_date, \'%d/%m/%Y à %Hh%imin%ss\') AS creation_date_fr, 
             DATE_FORMAT(modification_date, \'%d/%m/%Y à %Hh%imin%ss\') AS modification_date_fr 
@@ -50,7 +44,7 @@ class PostManager Extends DbManager
     
     public function getPosts()
     {
-        $req = $this->_db->query(
+        $req = SPDO::getInstance()->query(
             'SELECT posts.id, title, content, kicker, username, published, 
             DATE_FORMAT(creation_date, \'%d/%m/%Y à %Hh%imin%ss\') AS creation_date_fr,
             DATE_FORMAT(modification_date, \'%d/%m/%Y à %Hh%imin%ss\') AS modification_date_fr 
@@ -83,7 +77,7 @@ class PostManager Extends DbManager
     public function getAdminPosts($user = false)
     {
         if ($user === false) {
-            $req = $this->_db->query(
+            $req = SPDO::getInstance()->query(
                 'SELECT posts.id, title, content, kicker, username, published, 
                 DATE_FORMAT(creation_date, \'%d/%m/%Y à %Hh%imin%ss\') AS creation_date_fr,
                 DATE_FORMAT(modification_date, \'%d/%m/%Y à %Hh%imin%ss\') AS modification_date_fr 
@@ -128,7 +122,7 @@ class PostManager Extends DbManager
 
     public function getPost($postId)
     {
-        $req = $this->_db->prepare(
+        $req = SPDO::getInstance()->prepare(
             'SELECT posts.id, title, content, kicker, username, published, 
             DATE_FORMAT(creation_date, \'%d/%m/%Y à %Hh%imin%ss\') AS creation_date_fr,
             DATE_FORMAT(modification_date, \'%d/%m/%Y à %Hh%imin%ss\') AS modification_date_fr 
@@ -154,7 +148,7 @@ class PostManager Extends DbManager
 
     public function updatePost($postid, $title, $kicker, $content, $author)
     {
-        $req = $this->_db->prepare(
+        $req = SPDO::getInstance()->prepare(
             'UPDATE posts SET title = :title,
              kicker = :kicker, 
              author = :author, 
@@ -176,7 +170,7 @@ class PostManager Extends DbManager
 
     public function insertPost($title, $kicker, $content, $author)
     {
-        $req = $this->_db->prepare(
+        $req = SPDO::getInstance()->prepare(
             'INSERT INTO posts (title, kicker, content, author, creation_date, modification_date, published) 
             VALUES ( :title, :kicker, :content, :author, NOW(), NOW(), 0)'
         );
@@ -191,7 +185,7 @@ class PostManager Extends DbManager
 
     public function getPostsAuthor($postId)
     {
-        $req = $this->_db->prepare(
+        $req = SPDO::getInstance()->prepare(
             'SELECT author 
             FROM posts
             WHERE   id = :id'
@@ -205,7 +199,7 @@ class PostManager Extends DbManager
 
     public function updatePulicationPost($postid)
     {
-        $req = $this->_db->prepare(
+        $req = SPDO::getInstance()->prepare(
             'SELECT id, published
             FROM posts
             WHERE id = :id'
@@ -219,7 +213,7 @@ class PostManager Extends DbManager
         } else {
             $publication = 1;
         }
-        $req = $this->_db->prepare(
+        $req = SPDO::getInstance()->prepare(
             'UPDATE posts
             SET published = :published 
             WHERE id = :id'
@@ -233,7 +227,7 @@ class PostManager Extends DbManager
 
     public function removePost($postid)
     {
-        $req = $this->_db->prepare(
+        $req = SPDO::getInstance()->prepare(
             'DELETE FROM posts WHERE id = :id'
         );
         $req->bindValue(':id', $postid, PDO::PARAM_INT);
