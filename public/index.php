@@ -21,18 +21,26 @@ $isConnected = new \Twig\TwigFunction('isConnected', function () {
 
 $twig->addFunction($isConnected);
 $isGranted= new \Twig\TwigFunction('isGranted', function () {
-    if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin') {
+    if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin' || $_SESSION['user_role'] === 'superadmin') {
         return true;
     }
     return false;
 });
 $twig->addFunction($isGranted);
+$isSuperAdmin= new \Twig\TwigFunction('isSuperAdmin', function () {
+    if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'superadmin') {
+        return true;
+    }
+    return false;
+});
+$twig->addFunction($isSuperAdmin);
 $isDisplayComments= new \Twig\TwigFunction('isDisplayComments', function () {
     if (isset($_SESSION['user_role']) && $_SESSION['user_role'] !== 'contributor') {
         return true;
     }
     return false;
 });
+
 $twig->addFunction($isDisplayComments);
 if (isset($_SESSION['username'])) {
     $twig->addGlobal('session', $_SESSION['username']);
@@ -178,6 +186,13 @@ try {
                     );
             } else {
                 header('Location: index.php?action=authentification');
+            }
+        }
+        if ($_GET['action'] == 'publish-superuser') {
+            if (isset($_GET['userid'], $_GET['token']) && $_GET['userid'] >=0 && $_GET['token'] == $_SESSION['token']) {
+                $backend->publishUser($twig, $_GET['userid']);
+            } else {
+                throw new Exception('Erreur : identifiant identifiant de l\'utilisateur ou token non envoyé');
             }
         }
         if ($_GET['action'] == 'mail') {

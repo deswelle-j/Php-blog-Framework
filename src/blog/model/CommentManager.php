@@ -2,21 +2,14 @@
 
 namespace Framework\Blog\Model;
 
-use Framework\Blog\Model\DbManager;
+use Framework\Blog\Model\SPDO;
 use \PDO;
 
-class CommentManager Extends DbManager
+class CommentManager
 {
-    private $_db;
-
-    public function __construct()
-    {
-        $this->_db = $this->dbConnect();
-    }
-    
     public function getComments($postId)
     {
-        $comments = $this->_db->prepare(
+        $comments = SPDO::getInstance()->prepare(
             'SELECT comments.id, post_id, username, comment, published,
             DATE_FORMAT(comment_date, \'%d/%m/%Y à %Hh%imin%ss\') AS comment_date_fr 
             FROM comments 
@@ -44,7 +37,7 @@ class CommentManager Extends DbManager
 
     public function getCommentsList()
     {
-        $req = $this->_db->query(
+        $req = SPDO::getInstance()->query(
             'SELECT comments.id, post_id, username as author, comment, published,
             DATE_FORMAT(comment_date, \'%d/%m/%Y à %Hh%imin%ss\') AS comment_date_fr 
             FROM comments 
@@ -71,14 +64,14 @@ class CommentManager Extends DbManager
 
     public function postComment($postId, $author, $comment)
     {
-        $comments = $this->_db->prepare('INSERT INTO comments(post_id, author, comment, comment_date) VALUES(?, ?, ?, NOW())');
+        $comments = SPDO::getInstance()->prepare('INSERT INTO comments(post_id, author, comment, comment_date) VALUES(?, ?, ?, NOW())');
         $affectedLines = $comments->execute(array($postId, $author, $comment));
         return $affectedLines;
     }
 
     public function updatePulicationComment($commentId)
     {
-        $req = $this->_db->prepare(
+        $req = SPDO::getInstance()->prepare(
             'SELECT id, published
             FROM comments
             WHERE id = :id'
@@ -92,7 +85,7 @@ class CommentManager Extends DbManager
         } else {
             $publication = 1;
         }
-        $req = $this->_db->prepare(
+        $req = SPDO::getInstance()->prepare(
             'UPDATE comments
             SET published = :published 
             WHERE id = :id'

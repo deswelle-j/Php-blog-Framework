@@ -9,16 +9,16 @@ use Framework\Blog\Utils\Session;
 
 class Backend
 {
-    private $_postManager;
-    private $_commentManager;
-    private $_userManager;
+    private $postManager;
+    private $commentManager;
+    private $userManager;
 
 
     public function __construct()
     {
-        $this->_postManager = new PostManager();
-        $this->_commentManager = new CommentManager();
-        $this->_userManager = new UserManager();
+        $this->postManager = new PostManager();
+        $this->commentManager = new CommentManager();
+        $this->userManager = new UserManager();
     }
 
 
@@ -27,11 +27,11 @@ class Backend
         if ($role !== 'visitor') {
             $posts = null;
             if ($role === 'editor' || $role === 'admin') {
-                $posts = $this->_postManager->getAdminPosts();
+                $posts = $this->postManager->getAdminPosts();
             } else {
-                $posts = $this->_postManager->getAdminPosts($_SESSION['user']);
+                $posts = $this->postManager->getAdminPosts($_SESSION['user']);
             }
-            $comments = $this->_commentManager->getCommentsList();
+            $comments = $this->commentManager->getCommentsList();
             echo $twig->render(
                 '@admin/administrationView.html.twig',
                 [
@@ -57,7 +57,7 @@ class Backend
             $login = trim($email);
             $password =trim($password);
             if (filter_var($login, FILTER_VALIDATE_EMAIL) && !empty($password)) {
-                $user = $this->_userManager->userAuthentification($login);
+                $user = $this->userManager->userAuthentification($login);
                 $count = count($user);
                 if (count($user) > 0 && password_verify($password, $user[0]['password'])) {
                     $_SESSION['user'] = $user[0]['id'];
@@ -84,9 +84,14 @@ class Backend
 
     public function superUserList($twig, $role)
     {
-        if ($role === 'admin') {
-            $users = $this->_userManager->getUsers();
-            echo $twig->render('@admin/adminSuperuserView.html.twig', ['users' => $users]);
+        if ($role === 'admin' || $role === 'superadmin') {
+            $users = $this->userManager->getUsers();
+            echo $twig->render('@admin/adminSuperuserView.html.twig', [
+                'users' => $users,
+                'token' => $_SESSION['token']
+            ]);
+        } else {
+            header('Location: Location: index.php?action=authentification');
         }
     }
 
@@ -114,7 +119,7 @@ class Backend
             if (filter_var($login, FILTER_VALIDATE_EMAIL) && !empty($password) && !empty($firstname) &&
                 !empty($lastname) && !empty($role)) {
                 $password = password_hash($password, PASSWORD_DEFAULT);
-                $user = $this->_userManager->superUserCreation($login, $password, $firstname, $lastname, $username, $role);
+                $user = $this->userManager->superUserCreation($login, $password, $firstname, $lastname, $username, $role);
                 header('Location: Location: index.php?action=authentification');
             } else {
                 throw new Exception('Information de connexion incorrectes');
@@ -128,7 +133,7 @@ class Backend
     {
         if ($postid !== false) {
             if ($_SESSION['user_role'] === 'contributor') {
-                $author = $this->_postManager->getPostsAuthor($postid);
+                $author = $this->postManager->getPostsAuthor($postid);
                 if ($_SESSION['user'] !== $author['author']) {
                     echo $twig->render('@admin/adminEditPostView.html.twig', [
                         'token' => $_SESSION['token']
@@ -136,7 +141,7 @@ class Backend
                     return;
                 }
             } else {
-                $post = $this->_postManager->getPost($postid);
+                $post = $this->postManager->getPost($postid);
                 echo $twig->render('@admin/adminEditPostView.html.twig', [
                     'post' => $post,
                     'token' => $_SESSION['token']
@@ -152,7 +157,7 @@ class Backend
     public function publishPost($twig, $postid)
     {
         if (isset($postid)) {
-            $post = $this->_postManager->updatePulicationPost($postid);
+            $post = $this->postManager->updatePulicationPost($postid);
             header("Location: index.php?action=authentification");
         }
     }
@@ -160,17 +165,25 @@ class Backend
     public function publishComment($twig, $commentId)
     {
         if (isset($commentId)) {
-            $comment = $this->_commentManager->updatePulicationComment($commentId);
+            $comment = $this->commentManager->updatePulicationComment($commentId);
             header("Location: index.php?action=authentification");
+        }
+    }
+
+    public function publishUser($twig, $userId)
+    {
+        if (isset($userId)) {
+            $user = $this->userManager->updateUserStatus($userId);
+            header("Location: index.php?action=superuserlist");
         }
     }
 
     public function savePost($twig, $title, $kicker, $content, $postid = false)
     {
         if ($postid) {
-            $post = $this->_postManager->updatePost($postid, $title, $kicker, $content, $_SESSION['user']);
+            $post = $this->postManager->updatePost($postid, $title, $kicker, $content, $_SESSION['user']);
         } else {
-            $post = $this->_postManager->insertPost($title, $kicker, $content, $_SESSION['user']);
+            $post = $this->postManager->insertPost($title, $kicker, $content, $_SESSION['user']);
         }
         header('Location: index.php?action=authentification');
     }
@@ -178,7 +191,7 @@ class Backend
     public function deletePost($twig, $postid)
     {
         if (isset($postid)) {
-            $this->_postManager->removePost($postid);
+            $this->postManager->removePost($postid);
             header('Location: index.php?action=authentification');
         }
     }
