@@ -88,7 +88,7 @@ class PostManager
             );
             $req->execute();
         } else {
-            $req = $this->_db->prepare(
+            $req = SPDO::getInstance()->prepare(
                 'SELECT posts.id, title, content, kicker, username, published, 
                 DATE_FORMAT(creation_date, \'%d/%m/%Y à %Hh%imin%ss\') AS creation_date_fr,
                 DATE_FORMAT(modification_date, \'%d/%m/%Y à %Hh%imin%ss\') AS modification_date_fr 

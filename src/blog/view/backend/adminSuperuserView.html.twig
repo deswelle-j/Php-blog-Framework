@@ -9,16 +9,20 @@
                 <table class="table">
                 <thead class="thead-dark">
                     <tr>
-                        <th>id</th><th>email</th><th>role</th><th>firstname</th><th>lastname</th>
+                        <th>email</th><th>role</th><th>firstname</th><th>lastname</th><th></th>
                     </tr>
                 <thead>
                     {% for user in users %}
                             <tr>
-                                <td>{{user.id}}</td>
                                 <td>{{user.email }}</td>
                                 <td>{{user.role}}</td>
                                 <td>{{user.firstname}}</td>
                                 <td>{{user.lastname}}</td>
+                                <td>
+                                    {% if isSuperAdmin() %}
+                                        <a class="dropdown-item" href="index.php?action=publish-superuser&amp;userid={{user.id}}&amp;token={{token}}">{{user.status ? 'Activer' : 'Désactiver'}}</a>               
+                                    {% endif %}
+                                </td>
                             </tr>                
                     {% endfor %}
                 </table>
@@ -68,6 +72,7 @@
                             </select>
                         </div>
                     </div>
+                    <input type="hidden" id="token" name="token" value="{{token}}" class="form-control">
                     <div class="row">
                         <div class="col-sm-10">
                         <button type="submit" class="btn btn-lg btn-primary btn-block">Valider</button>    

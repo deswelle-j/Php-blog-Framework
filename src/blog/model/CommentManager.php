@@ -7,7 +7,6 @@ use \PDO;
 
 class CommentManager
 {
-    
     public function getComments($postId)
     {
         $comments = SPDO::getInstance()->prepare(

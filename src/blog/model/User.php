@@ -10,14 +10,16 @@ class User
     protected $role;
     protected $firstname;
     protected $lastnames;
+    protected $status;
 
-    public function __construct($id, $email, $role, $firstname, $lastname)
+    public function __construct($id, $email, $role, $firstname, $lastname, $status)
     {
         $this->setId($id);
         $this->setEmail($email);
         $this->setRole($role);
         $this->setfirstname($firstname);
         $this->setLastname($lastname);
+        $this->setStatus($status);
     }
 
     public function id()
@@ -43,6 +45,11 @@ class User
     public function lastname()
     {
         return $this->lastname;
+    }
+
+    public function status()
+    {
+        return $this->status;
     }
 
     public function setId($id)
@@ -85,5 +92,10 @@ class User
         if (is_string($lastname)) {
             $this->lastname = $lastname;
         }
+    }
+
+    public function setStatus($status)
+    {
+        $this->status = $status;
     }
 }
